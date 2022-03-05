@@ -1,0 +1,116 @@
+.commonSpell {
+  position: relative;
+  object-fit: none;
+  object-position: -74px -43px;
+  width: 170px;
+  height: 240px;
+}
+
+.spellCost {
+  position: absolute;
+  font-weight: bold;
+  font-size: 42px;
+  top: -10px;
+  color: whitesmoke;
+  -webkit-text-stroke: 1px black;
+}
+
+.spellCost.single {
+  left: 10px;
+}
+.spellCost.double {
+  left: 0px;
+}
+
+.spellName {
+  position: absolute;
+  font-weight: bolder;
+  top: 113px;
+  left: 40px;
+}
+
+.spellText {
+  position: absolute;
+  font-weight: bold !important;
+  font-size: 10px !important;
+  top: 160px;
+  left: 27px;
+  width: 120px;
+  height: 60px;
+  text-align: center;
+}
+
+.commonMinion {
+  object-fit: none;
+  object-position: -74px -287px;
+  width: 170px;
+  height: 245px;
+}
+
+.minionCost {
+  position: absolute;
+  font-weight: bold;
+  font-size: 42px;
+  top: -5px;
+  color: whitesmoke;
+  -webkit-text-stroke: 1px black;
+}
+
+.minionCost.single {
+  left: 10px;
+}
+.minionCost.double {
+  left: 0px;
+}
+
+.minionAttack {
+  position: absolute;
+  font-weight: bold;
+  font-size: 32px;
+  top: 202px;
+  color: whitesmoke;
+  -webkit-text-stroke: 1px black;
+}
+
+.minionAttack.single {
+  left: 15px;
+}
+.minionAttack.double {
+  font-size: 28px;
+  left: 9px;
+}
+
+.minionHealth {
+  position: absolute;
+  font-weight: bold;
+  font-size: 32px;
+  top: 202px;
+  color: whitesmoke;
+  -webkit-text-stroke: 1px black;
+}
+
+.minionHealth.single {
+  left: 145px;
+}
+.minionHealth.double {
+  font-size: 28px;
+  left: 138px;
+}
+
+.minionText {
+  position: absolute;
+  font-weight: bold !important;
+  font-size: 10px !important;
+  top: 160px;
+  left: 27px;
+  width: 120px;
+  height: 60px;
+  text-align: center;
+}
+
+.minionName {
+  position: absolute;
+  font-weight: bolder;
+  top: 120px;
+  left: 40px;
+}
