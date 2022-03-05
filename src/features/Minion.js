@@ -1,14 +1,13 @@
 import { Paper, Typography } from "@mui/material";
 import React from "react";
 import "./Minion.css";
-import MinionFrame from "./legendMinion.png";
-import HealthImg from "./health.png";
-import AttackImg from "./attack.png";
+import MinionFrame from "./images/legendMinion.png";
+import HealthImg from "./images/health.png";
+import AttackImg from "./images/attack.png";
 
 export default function Minion(props) {
   const { name, cost, attack, health, deck, type, subType, description } =
     props.card;
-  console.log("alex alex", attack);
   return (
     <Paper elevation={0} sx={{ position: "relative" }}>
       <img className="frame" src={MinionFrame} alt="Icons" />

@@ -1,7 +1,7 @@
 import { Paper, Typography } from "@mui/material";
 import React from "react";
 import "./Card.css";
-import CardImg from "./card-sprite.png";
+import CardImg from "./images/card-sprite.png";
 
 export default function SpellCard(props) {
   const { name, cost, deck, type, subType, description } = props.card;

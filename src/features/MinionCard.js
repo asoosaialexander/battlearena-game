@@ -1,14 +1,28 @@
 import { Paper, Typography } from "@mui/material";
 import React from "react";
+import { useDispatch } from "react-redux";
 import "./Card.css";
-import CardImg from "./card-sprite.png";
+import CardImg from "./images/card-sprite.png";
+import { playCard } from "./playerSlice";
+import { addPlayerMinion } from "./playAreaSlice";
+import { CardType } from "./common";
 
 export default function MinionCard(props) {
   const { name, cost, attack, health, deck, type, subType, description } =
     props.card;
+  const dispatch = useDispatch();
 
   return (
-    <Paper elevation={0} sx={{ position: "relative" }}>
+    <Paper
+      elevation={0}
+      sx={{ position: "relative", cursor: "pointer" }}
+      onClick={() => {
+        dispatch(playCard(props.card));
+        if (type === CardType.Minion) {
+          dispatch(addPlayerMinion(props.card));
+        }
+      }}
+    >
       <img className="commonMinion" src={CardImg} alt="Icons" />
       <Typography
         variant="body"
