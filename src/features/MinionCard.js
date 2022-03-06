@@ -1,29 +1,42 @@
-import { Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import "./Card.css";
-import CardImg from "./images/card-sprite.png";
 import { playCard } from "./playerSlice";
-import { addPlayerMinion } from "./playAreaSlice";
+import { addSelfMinion, addEnemyMinion } from "./playAreaSlice";
 import { CardType } from "./common";
 
 export default function MinionCard(props) {
-  const { name, cost, attack, health, deck, type, subType, description } =
-    props.card;
+  const { id, name, cost, attack, health, type, text } = props.card;
   const dispatch = useDispatch();
 
   return (
     <Paper
       elevation={0}
-      sx={{ position: "relative", cursor: "pointer" }}
+      sx={{
+        position: "relative",
+        cursor: "pointer",
+        width: "240px",
+        height: "336px",
+        zoom: "80%",
+      }}
       onClick={() => {
-        dispatch(playCard(props.card));
+        dispatch(playCard({ card: props.card, player: props.player }));
         if (type === CardType.Minion) {
-          dispatch(addPlayerMinion(props.card));
+          dispatch(
+            props.player === "self"
+              ? addSelfMinion(props.card)
+              : addEnemyMinion(props.card)
+          );
         }
       }}
     >
-      <img className="commonMinion" src={CardImg} alt="Icons" />
+      <img
+        className="minionImage"
+        src={`https://art.hearthstonejson.com/v1/256x/${id}.jpg`}
+        alt="CardGraphics"
+      />
+      <Box className="commonMinion"></Box>
       <Typography
         variant="body"
         className={cost > 9 ? "minionCost double" : "minionCost single"}
@@ -45,9 +58,10 @@ export default function MinionCard(props) {
       <Typography variant="body" className="minionName">
         {name}
       </Typography>
-      <Typography className="minionText">
-        <p>{description}</p>
-      </Typography>
+      <div
+        className="minionText"
+        dangerouslySetInnerHTML={{ __html: `<p>${text}</p>` }}
+      />
     </Paper>
   );
 }

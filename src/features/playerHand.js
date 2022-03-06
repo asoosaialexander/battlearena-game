@@ -4,19 +4,28 @@ import { useSelector } from "react-redux";
 import { CardType } from "./common";
 import MinionCard from "./MinionCard";
 import SpellCard from "./SpellCard";
-import { selectPlayerHand } from "./playerSlice";
+import { selectSelfHand, selectEnemyHand } from "./playerSlice";
 
-export default function PlayerHand() {
-  const playerCards = useSelector(selectPlayerHand);
+export default function PlayerHand(props) {
+  const { player } = props;
+  const playerCards = useSelector(
+    player === "self" ? selectSelfHand : selectEnemyHand
+  );
 
   return (
-    <Grid container direction="row" justifyContent="center" alignItems="center" sx={{ minHeight: "260px"}}>
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      sx={{ minHeight: "260px" }}
+    >
       {playerCards.map((card) => {
         switch (card.type) {
           case CardType.Spell:
-            return <SpellCard card={card} />;
+            return <SpellCard key={card.id} card={card} player={player} />;
           default:
-            return <MinionCard card={card} />;
+            return <MinionCard key={card.id} card={card} player={player} />;
         }
       })}
     </Grid>

@@ -1,66 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  Frostbolt,
-  ArcaneIntellect,
-  Fireball,
-  Polymorph,
-  WaterElemental,
-} from "./MageCards";
-import {
-  AcidicSwampOoze,
-  BloodfenRaptor,
-  SenjinShieldMasta,
-} from "./CommonCards";
+import CoreMage from "./data/core-mage.json";
+import CorePriest from "./data/core-priest.json";
 
 const initialState = {
-  energy: 1,
-  hero: {
-    isAlive: true,
-    attack: 0,
-    health: 30,
-    fatigue: 1,
+  self: {
+    handCards: [],
+    deckCards: CoreMage,
   },
-  handCards: [],
-  deckCards: [
-    Frostbolt,
-    ArcaneIntellect,
-    Fireball,
-    Polymorph,
-    WaterElemental,
-    AcidicSwampOoze,
-    BloodfenRaptor,
-    SenjinShieldMasta,
-  ],
+  enemy: {
+    handCards: [],
+    deckCards: CorePriest,
+  },
 };
 
 export const playerSlice = createSlice({
   name: "player",
   initialState,
   reducers: {
-    drawCard: (state) => {
-      if (state.deckCards.length <= 0) {
-        state.hero.health -= state.hero.fatigue;
-        state.hero.fatigue += 1;
-        if (state.hero.health <= 0) state.hero.isAlive = false;
+    drawCard: (state, action) => {
+      const person = state[action.payload]
+      if (person.deckCards.length <= 0) {
+        person.hero.health -= person.hero.fatigue;
+        person.hero.fatigue += 1;
+        if (person.hero.health <= 0) person.hero.isAlive = false;
       } else {
-        const index = Math.floor(Math.random() * state.deckCards.length);
-        const drawCard = state.deckCards[index];
-        state.deckCards.splice(index, 1);
-        state.handCards.push(drawCard);
+        const index = Math.floor(Math.random() * person.deckCards.length);
+        const drawCard = person.deckCards[index];
+        person.deckCards.splice(index, 1);
+        //Draw card if the hand count is < 10
+        if (person.handCards.length < 10) person.handCards.push(drawCard);
       }
     },
     playCard: (state, action) => {
-      const cardIndex = state.handCards.findIndex(
-        (card) => card.name === action.payload.name
+      const person = state[action.payload.player];
+      const cardIndex = person.handCards.findIndex(
+        (card) => card.name === action.payload.card.name
       );
-      state.handCards.splice(cardIndex, 1);
+      person.handCards.splice(cardIndex, 1);
     },
   },
 });
 
-export const selectPlayerHand = (state) => state.player.handCards;
-export const playerDeckCardCount = (state) => state.player.deckCards.length;
-export const selectHero = (state) => state.player.hero;
+export const selectSelfHand = (state) => state.player.self.handCards;
+export const selectEnemyHand = (state) => state.player.enemy.handCards;
+export const selfDeckCardCount = (state) => state.player.self.deckCards.length;
+export const enemyDeckCardCount = (state) => state.player.enemy.deckCards.length;
 
 export const { drawCard, playCard } = playerSlice.actions;
 

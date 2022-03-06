@@ -1,30 +1,151 @@
-import { Paper, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Paper,
+  Select,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import "./Minion.css";
-import MinionFrame from "./images/legendMinion.png";
 import HealthImg from "./images/health.png";
 import AttackImg from "./images/attack.png";
+import { Box } from "@mui/system";
+import { Rarity } from "./common";
+import {
+  selectSelfMinions,
+  selectEnemyMinions,
+  attackMinion,
+} from "./playAreaSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Minion(props) {
-  const { name, cost, attack, health, deck, type, subType, description } =
-    props.card;
+  const { id, attack, health, rarity, name } = props.card;
+  const player = props.player;
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [target, setTarget] = React.useState("");
+
+  const selfMinions = useSelector(selectSelfMinions);
+  const enemyMinions = useSelector(selectEnemyMinions);
+  const dispatch = useDispatch();
+
+  const handleChange = (event) => {
+    setTarget(event.target.value);
+  };
+
+  const opponentMinions = player === "self" ? enemyMinions : selfMinions;
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "white",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
-    <Paper elevation={0} sx={{ position: "relative" }}>
-      <img className="frame" src={MinionFrame} alt="Icons" />
-      <img className="attackImg" src={AttackImg} alt="Icons" />
-      <Typography
-        variant="body"
-        className={attack > 9 ? "mAttack double" : "mAttack single"}
+    <>
+      <Paper elevation={0} className="mContainer" onClick={handleOpen}>
+        <Box
+          className={rarity === Rarity.Legendary ? "frame" : "normalFrame"}
+        />
+        <img className="attackImg" src={AttackImg} alt="Icons" />
+        <Typography className="mName" variant="body">
+          {name}
+        </Typography>
+        <Typography
+          variant="body"
+          className={attack > 9 ? "mAttack double" : "mAttack single"}
+        >
+          {attack}
+        </Typography>
+        <img
+          className={`healthImg${rarity === Rarity.Legendary ? 1 : 2}`}
+          src={HealthImg}
+          alt="Icons"
+        />
+        <Typography
+          variant="body"
+          className={
+            health > 9
+              ? `mHealth double${rarity === Rarity.Legendary ? 1 : 2}`
+              : `mHealth single${rarity === Rarity.Legendary ? 1 : 2}`
+          }
+        >
+          {health}
+        </Typography>
+        {/* <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <clipPath id="clipCircle">
+          <circle r="80" cx="50" cy="50" />
+        </clipPath>
+        <image
+          width="400"
+          height="400"
+          clip-path="url(#clipCircle)"
+          href={`https://art.hearthstonejson.com/v1/256x/${id}.jpg`}
+        />
+      </svg> */}
+      </Paper>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        {attack}
-      </Typography>
-      <img className="healthImg" src={HealthImg} alt="Icons" />
-      <Typography
-        variant="body"
-        className={health > 9 ? "mHealth double" : "mHealth single"}
-      >
-        {health}
-      </Typography>
-    </Paper>
+        <Box sx={style}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Target</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={target}
+              label="target"
+              onChange={handleChange}
+            >
+              {opponentMinions.map((m) => {
+                return (
+                  <MenuItem key={m.id} value={m.id}>
+                    {m.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <Grid gap={1} container direction={"row"} sx={{ marginTop: 1 }}>
+            <Grid item>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  dispatch(
+                    attackMinion({
+                      attacker: id,
+                      target: target,
+                      player: player,
+                    })
+                  );
+                  handleClose();
+                }}
+              >
+                Attack
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" onClick={handleClose}>
+                Nevermind
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import React from "react";
 import HeroFrame from "./../features/images/heroFrame.png";
 import ArmorImg from "./../features/images/armor.webp";
@@ -18,7 +18,7 @@ export default function PlayerHero() {
       gap={1}
     >
       <Grid item sx={{ position: "relative" }}>
-        <img className="frame" src={HeroFrame} alt="Hero" />
+        <img className="heroFrame" src={HeroFrame} alt="Hero" />
         <img className="armorImg" src={ArmorImg} alt="HeroArmor" />
         <Typography
           variant="body"
@@ -34,7 +34,7 @@ export default function PlayerHero() {
         </Typography>
       </Grid>
       <Grid item>
-        <img className="frame" src={HeroPower} alt="Hero" />
+        <img className="heroFrame" src={HeroPower} alt="Hero" />
       </Grid>
     </Grid>
   );

@@ -5,8 +5,8 @@ export const Deck = {
 };
 
 export const CardType = {
-  Minion: "minion",
-  Spell: "spell",
+  Minion: "MINION",
+  Spell: "SPELL",
 };
 
 export const SpellType = {
@@ -18,4 +18,8 @@ export const SpellType = {
 export const MinionType = {
   Beast: "Beast",
   Elemental: "Elemental",
+};
+
+export const Rarity = {
+  Legendary: "LEGENDARY",
 };
