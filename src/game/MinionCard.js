@@ -23,7 +23,7 @@ export default function MinionCard(props) {
       onClick={() => {
         dispatch(playCard({ card: props.card, player: props.player }));
         if (type === CardType.Minion) {
-          dispatch(playMinion(props.card, props.player));
+          dispatch(playMinion({ card: props.card, player: props.player }));
         }
       }}
     >
