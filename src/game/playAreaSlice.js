@@ -24,12 +24,13 @@ export const playAreaSlice = createSlice({
   name: "playArea",
   initialState,
   reducers: {
-    addSelfMinion: (state, action) => {
-      if (state.selfMinions.length < 7) state.selfMinions.push(action.payload);
-    },
-    addEnemyMinion: (state, action) => {
-      if (state.enemyMinions.length < 7)
-        state.enemyMinions.push(action.payload);
+    playMinion: (state, action) => {
+      const card = action.payload.card;
+      const player = action.payload.player;
+      if (player === "self" && state.selfMinions.length < 7)
+        state.selfMinions.push(card);
+      if (player === "enemy" && state.enemyMinions.length < 7)
+        state.enemyMinions.push(card);
     },
     dealDamage: (state, action) => {
       const targetId = action.payload.target;
@@ -108,7 +109,9 @@ export const playAreaSlice = createSlice({
 
         if (
           state.enemyMinions[attackerIndex].health <= 0 ||
-          state.selfMinions[targetIndex].mechanics?.includes(Mechanics.Poisonous)
+          state.selfMinions[targetIndex].mechanics?.includes(
+            Mechanics.Poisonous
+          )
         )
           state.enemyMinions.splice(attackerIndex, 1);
       }
@@ -119,7 +122,7 @@ export const playAreaSlice = createSlice({
 export const selectSelfMinions = (state) => state.playArea.selfMinions;
 export const selectEnemyMinions = (state) => state.playArea.enemyMinions;
 
-export const { addSelfMinion, addEnemyMinion, attackMinion, dealDamage } =
+export const { playMinion, attackMinion, dealDamage } =
   playAreaSlice.actions;
 
 export default playAreaSlice.reducer;

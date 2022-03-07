@@ -3,7 +3,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import "./Card.css";
 import { playCard } from "./playerSlice";
-import { addSelfMinion, addEnemyMinion } from "./playAreaSlice";
+import { playMinion } from "./playAreaSlice";
 import { CardType } from "./common";
 
 export default function MinionCard(props) {
@@ -23,11 +23,7 @@ export default function MinionCard(props) {
       onClick={() => {
         dispatch(playCard({ card: props.card, player: props.player }));
         if (type === CardType.Minion) {
-          dispatch(
-            props.player === "self"
-              ? addSelfMinion(props.card)
-              : addEnemyMinion(props.card)
-          );
+          dispatch(playMinion(props.card, props.player));
         }
       }}
     >
