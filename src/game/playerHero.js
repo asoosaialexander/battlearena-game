@@ -1,8 +1,8 @@
 import { Grid, Typography } from "@mui/material";
 import React from "react";
-import HeroFrame from "./../features/images/heroFrame.png";
-import ArmorImg from "./../features/images/armor.webp";
-import HeroPower from "./../features/images/heroPower.webp";
+import HeroFrame from "./../images/heroFrame.png";
+import ArmorImg from "./../images/armor.webp";
+import HeroPower from "./../images/heroPower.webp";
 import "./Hero.css";
 
 export default function PlayerHero() {

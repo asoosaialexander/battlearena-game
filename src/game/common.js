@@ -23,3 +23,9 @@ export const MinionType = {
 export const Rarity = {
   Legendary: "LEGENDARY",
 };
+
+export const Mechanics = {
+  Poisonous: "POISONOUS",
+  Stealth: "STEALTH",
+  Deathrattle: "DEATHRATTLE",
+};

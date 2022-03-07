@@ -1,6 +1,6 @@
 .commonSpell {
   position: absolute;
-  background: url("./images//card-sprite.png") -9px -4px;
+  background: url("./../images//card-sprite.png") -9px -4px;
   width: 233px;
   height: 329px;
   top: 0;
@@ -63,7 +63,7 @@
 
 .commonMinion {
   position: absolute;
-  background: url("./images//card-sprite.png") -3px -338px;
+  background: url("./../images//card-sprite.png") -3px -338px;
   width: 240px;
   height: 336px;
   top: 0;

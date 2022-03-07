@@ -1,7 +1,7 @@
 import { Paper, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CardBackImg from "./images/cardBack.png";
+import CardBackImg from "./../images/cardBack.png";
 import { selfDeckCardCount, enemyDeckCardCount } from "./playerSlice";
 import { drawCard } from "./playerSlice";
 

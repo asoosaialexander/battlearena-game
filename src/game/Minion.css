@@ -6,7 +6,7 @@
 }
 
 .frame {
-  background: url("./images/legendMinion.png") 0 0;
+  background: url("./../images/legendMinion.png") 0 0;
   height: 385px;
   width: 330px;
   zoom: 52%;
@@ -17,7 +17,7 @@
 }
 
 .normalFrame {
-  background: url("./images/normalMinion.png") -45px -36px;
+  background: url("./../images/normalMinion.png") -45px -36px;
   height: 260px;
   width: 205px;
   zoom: 72%;
@@ -96,4 +96,20 @@
   left: 20px;
   height: 50px;
   width: 110px;
+}
+
+.poisonous {
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  top: 40px;
+  left: -15px;
+}
+
+.deathrattle {
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  top: 40px;
+  left: -15px;
 }

@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import CoreMage from "./data/core-mage.json";
-import CorePriest from "./data/core-priest.json";
+import CoreMage from "./../data/core-mage.json";
+import CorePriest from "./../data/core-priest.json";
+import CoreRogue from "./../data/core-rogue.json";
 
 const initialState = {
   self: {
     handCards: [],
-    deckCards: CoreMage,
+    deckCards: CoreRogue,
   },
   enemy: {
     handCards: [],

@@ -1,5 +1,6 @@
 import {
   Button,
+  Card,
   FormControl,
   Grid,
   InputLabel,
@@ -11,10 +12,12 @@ import {
 } from "@mui/material";
 import React from "react";
 import "./Minion.css";
-import HealthImg from "./images/health.png";
-import AttackImg from "./images/attack.png";
+import HealthImg from "./../images/health.png";
+import AttackImg from "./../images/attack.png";
+import PoisonousImg from "./../images/icon_poisonous.png";
+import DeathratlleImg from "./../images/icon_deathrattle.png";
 import { Box } from "@mui/system";
-import { Rarity } from "./common";
+import { Mechanics, Rarity } from "./common";
 import {
   selectSelfMinions,
   selectEnemyMinions,
@@ -23,12 +26,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Minion(props) {
-  const { id, attack, health, rarity, name } = props.card;
+  const { id, attack, health, rarity, name, mechanics, text } = props.card;
   const player = props.player;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [target, setTarget] = React.useState("");
+  const [helpText, setHelpText] = React.useState(false);
 
   const selfMinions = useSelector(selectSelfMinions);
   const enemyMinions = useSelector(selectEnemyMinions);
@@ -53,8 +57,18 @@ export default function Minion(props) {
   };
 
   return (
-    <>
-      <Paper elevation={0} className="mContainer" onClick={handleOpen}>
+    <Box sx={{ position: "relative" }}>
+      <Paper
+        elevation={0}
+        className="mContainer"
+        onClick={handleOpen}
+        onMouseEnter={() => {
+          setHelpText(true);
+        }}
+        onMouseLeave={() => {
+          setHelpText(false);
+        }}
+      >
         <Box
           className={rarity === Rarity.Legendary ? "frame" : "normalFrame"}
         />
@@ -83,6 +97,12 @@ export default function Minion(props) {
         >
           {health}
         </Typography>
+        {mechanics && mechanics.includes(Mechanics.Poisonous) && (
+          <img className="poisonous" src={PoisonousImg} alt="posion" />
+        )}
+        {mechanics && mechanics.includes(Mechanics.Deathrattle) && (
+          <img className="deathrattle" src={DeathratlleImg} alt="posion" />
+        )}
         {/* <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
         <clipPath id="clipCircle">
           <circle r="80" cx="50" cy="50" />
@@ -95,6 +115,23 @@ export default function Minion(props) {
         />
       </svg> */}
       </Paper>
+      {text && helpText  && (
+        <Card
+          sx={{
+            position: "absolute",
+            overflow: "clip",
+            width: 200,
+            paddingLeft: 2,
+            paddingRight: 2,
+            left: 160,
+            top: 0,
+            zIndex: 1,
+            border: "2px solid black",
+          }}
+        >
+          <div dangerouslySetInnerHTML={{ __html: `<p>${text}</p>` }} />
+        </Card>
+      )}
       <Modal
         open={open}
         onClose={handleClose}
@@ -146,6 +183,6 @@ export default function Minion(props) {
           </Grid>
         </Box>
       </Modal>
-    </>
+    </Box>
   );
 }
