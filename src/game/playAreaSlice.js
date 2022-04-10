@@ -32,88 +32,52 @@ export const playAreaSlice = createSlice({
       if (player === "enemy" && state.enemyMinions.length < 7)
         state.enemyMinions.push(card);
     },
-    dealDamage: (state, action) => {
-      const targetId = action.payload.target;
+    clearDeadMinions: (state) => {
+      state.selfMinions = state.selfMinions.filter((m) => m.health > 0);
+      state.enemyMinions = state.enemyMinions.filter((m) => m.health > 0);
+    },
+    attackMinionWithMinion: (state, action) => {
+      const sId = action.payload.selfMinionId;
+      const eId = action.payload.enemyMinionId;
+
+      const sI = state.selfMinions.findIndex((m) => m.id === sId);
+      const eI = state.enemyMinions.findIndex((m) => m.id === eId);
+
+      state.enemyMinions[eI].health -= state.selfMinions[sI].attack;
+      state.selfMinions[sI].health -= state.enemyMinions[eI].attack;
+
+      //Logic for Poisonous Minion
+      if (state.selfMinions[sI].mechanics?.includes(Mechanics.Poisonous))
+        state.enemyMinions.splice(eI, 1);
+
+      if (state.enemyMinions[eI].mechanics?.includes(Mechanics.Poisonous))
+        state.selfMinions.splice(sI, 1);
+    },
+    attackMinionWithDamage: (state, action) => {
+      const tId = action.payload.target;
       const damage = action.payload.damage;
       const player = action.payload.player;
 
       if (player === "self") {
-        const targetIndex = state.enemyMinions.findIndex(
-          (m) => m.id === targetId
-        );
-        state.enemyMinions[targetIndex].health -= damage;
-        if (state.enemyMinions[targetIndex].health <= 0)
-          state.enemyMinions.splice(targetIndex, 1);
+        const tI = state.enemyMinions.findIndex((m) => m.id === tId);
+        state.enemyMinions[tI].health -= damage;
       } else {
-        const targetIndex = state.selfMinions.findIndex(
-          (m) => m.id === targetId
-        );
-        state.selfMinions[targetIndex].health -= damage;
-        if (state.selfMinions[targetIndex].health <= 0)
-          state.selfMinions.splice(targetIndex, 1);
+        const tI = state.selfMinions.findIndex((m) => m.id === tId);
+        state.selfMinions[tI].health -= damage;
       }
     },
-    attackMinion: (state, action) => {
-      const attackerId = action.payload.attacker;
-      const targetId = action.payload.target;
+    attackAllMinionsWithDamage: (state, action) => {
+      const damage = action.payload.damage;
       const player = action.payload.player;
 
       if (player === "self") {
-        const attackerIndex = state.selfMinions.findIndex(
-          (m) => m.id === attackerId
-        );
-        const targetIndex = state.enemyMinions.findIndex(
-          (m) => m.id === targetId
-        );
-
-        state.enemyMinions[targetIndex].health -=
-          state.selfMinions[attackerIndex].attack;
-        state.selfMinions[attackerIndex].health -=
-          state.enemyMinions[targetIndex].attack;
-
-        if (
-          state.enemyMinions[targetIndex].health <= 0 ||
-          state.selfMinions[attackerIndex].mechanics?.includes(
-            Mechanics.Poisonous
-          )
-        )
-          state.enemyMinions.splice(targetIndex, 1);
-
-        if (
-          state.selfMinions[attackerIndex].health <= 0 ||
-          state.enemyMinions[targetIndex].mechanics?.includes(
-            Mechanics.Poisonous
-          )
-        )
-          state.selfMinions.splice(attackerIndex, 1);
+        for (var i = 0; i < state.enemyMinions.length; i++) {
+          state.enemyMinions[i].health -= damage;
+        }
       } else {
-        const attackerIndex = state.enemyMinions.findIndex(
-          (m) => m.id === attackerId
-        );
-        const targetIndex = state.selfMinions.findIndex(
-          (m) => m.id === targetId
-        );
-
-        state.selfMinions[targetIndex].health -=
-          state.enemyMinions[attackerIndex].attack;
-        state.enemyMinions[attackerIndex].health -=
-          state.selfMinions[targetIndex].attack;
-
-        if (
-          state.selfMinions[targetIndex].health <= 0 ||
-          state.enemyMinions[attackerIndex].mechanics?.includes(
-            Mechanics.Poisonous
-          )
-        )
-          state.selfMinions.splice(targetIndex, 1);
-
-        if (
-          state.enemyMinions[attackerIndex].health <= 0 ||
-          state.selfMinions[targetIndex].mechanics?.includes(
-            Mechanics.Poisonous
-          )
-        )
-          state.enemyMinions.splice(attackerIndex, 1);
+        for (var j = 0; j < state.selfMinions.length; j++) {
+          state.selfMinions[j].health -= damage;
+        }
       }
     },
   },
@@ -122,7 +86,12 @@ export const playAreaSlice = createSlice({
 export const selectSelfMinions = (state) => state.playArea.selfMinions;
 export const selectEnemyMinions = (state) => state.playArea.enemyMinions;
 
-export const { playMinion, attackMinion, dealDamage } =
-  playAreaSlice.actions;
+export const {
+  playMinion,
+  clearDeadMinions,
+  attackMinionWithMinion,
+  attackMinionWithDamage,
+  attackAllMinionsWithDamage
+} = playAreaSlice.actions;
 
 export default playAreaSlice.reducer;

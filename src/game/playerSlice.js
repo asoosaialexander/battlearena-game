@@ -6,7 +6,7 @@ import CoreRogue from "./../data/core-rogue.json";
 const initialState = {
   self: {
     handCards: [],
-    deckCards: CoreRogue,
+    deckCards: CoreMage,
   },
   enemy: {
     handCards: [],

@@ -29,3 +29,8 @@ export const Mechanics = {
   Stealth: "STEALTH",
   Deathrattle: "DEATHRATTLE",
 };
+
+export const Spell = {
+  ArcaneIntellect: "Arcane Intellect",
+  Flamestrike: "Flamestrike",
+};

@@ -21,7 +21,8 @@ import { Mechanics, Rarity } from "./common";
 import {
   selectSelfMinions,
   selectEnemyMinions,
-  attackMinion,
+  attackMinionWithMinion,
+  clearDeadMinions
 } from "./playAreaSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -115,7 +116,7 @@ export default function Minion(props) {
         />
       </svg> */}
       </Paper>
-      {text && helpText  && (
+      {text && helpText && (
         <Card
           sx={{
             position: "absolute",
@@ -163,12 +164,12 @@ export default function Minion(props) {
                 variant="outlined"
                 onClick={() => {
                   dispatch(
-                    attackMinion({
-                      attacker: id,
-                      target: target,
-                      player: player,
+                    attackMinionWithMinion({
+                      selfMinionId: player === "self" ? id : target,
+                      enemyMinionId: player === "enemy" ? id : target,
                     })
                   );
+                  dispatch(clearDeadMinions());
                   handleClose();
                 }}
               >
