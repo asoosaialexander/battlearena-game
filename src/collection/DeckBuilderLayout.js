@@ -1,5 +1,9 @@
 import {
+  Button,
   Card,
+  CardActionArea,
+  CardContent,
+  CardHeader,
   Grid,
   Pagination,
   Paper,
@@ -55,6 +59,7 @@ export default function DeckBuilderLayout() {
   const [value, setValue] = React.useState(Deck.DemonHunter);
   const [cards, setCards] = React.useState(CoreDemonHunter);
   const [pageNo, setPageNo] = React.useState(1);
+  const [selectedCards, updateSelectedCards] = React.useState([]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -145,6 +150,13 @@ export default function DeckBuilderLayout() {
                             <img
                               src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`}
                               alt="CardGraphics"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                updateSelectedCards((prevState) => [
+                                  ...prevState,
+                                  card,
+                                ])
+                              }
                             />
                           </Paper>
                         );
@@ -162,15 +174,24 @@ export default function DeckBuilderLayout() {
               />
             </Card>
           </Grid>
-          <Grid item xs={2}>
-            <Card style={{ backgroundColor: "green" }}>
-              <Paper elevation={1}>
-                <img
-                  className="spellImage"
-                  src={`https://art.hearthstonejson.com/v1/tiles/CORE_OG_070.jpg`}
-                  alt="CardGraphics"
-                />
-              </Paper>
+          <Grid item xs={2} sx={{ alignItems: "center" }}>
+            <Card sx={{ p: 1, marginLeft: 1 }}>
+              <CardHeader title="Custom Deck" subheader="Mage"></CardHeader>
+              <CardContent>
+                {selectedCards.map((card) => (
+                  <img
+                    key={card.id}
+                    src={`https://art.hearthstonejson.com/v1/tiles/${card.id}.jpg`}
+                    alt={card.name}
+                  />
+                ))}
+              </CardContent>
+              <CardActionArea>
+                <Typography variant="overline">{selectedCards.length}/30 Cards</Typography>{" "}
+                <Button size="large" variant="outlined" color="primary">
+                  Save
+                </Button>
+              </CardActionArea>
             </Card>
           </Grid>
         </Grid>
