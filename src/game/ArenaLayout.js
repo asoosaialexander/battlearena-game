@@ -2,7 +2,6 @@ import { Box, Button, Card, Divider, Grid } from "@mui/material";
 import React from "react";
 import PlayerArea from "./PlayerArea";
 import EnemyArea from "./EnemyArea";
-
 import { useSelector, useDispatch } from "react-redux";
 import { addPlayerMinion } from "./playAreaSlice";
 import { selectPlayerHand } from "./playerSlice";
@@ -13,19 +12,19 @@ import PlayerHero from "./playerHero";
 import HearthstoneJSON from "hearthstonejson-client";
 
 export default function ArenaLayout() {
-  // var hsjson = new HearthstoneJSON();
+  var hsjson = new HearthstoneJSON();
 
-  // // get the latest data
-  // hsjson.getLatest("enUS").then((cards) => {
-  //   console.log(
-  //     cards.filter(
-  //       (card) =>
-  //         card.set === "CORE" &&
-  //         card.cardClass === "ROGUE" &&
-  //         (card.type === "MINION" || card.type === "SPELL")
-  //     )
-  //   );
-  // });
+  // get the latest data
+  hsjson.getLatest("enUS").then((cards) => {
+    console.log(
+      cards.filter(
+        (card) =>
+          card.set === "CORE" &&
+          card.cardClass === "PALADIN" &&
+          (card.type === "MINION" || card.type === "SPELL")
+      )
+    );
+  });
 
   return (
     <Box>

@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import CoreNeutral from "./../data/core-neutral.json";
 import CoreMage from "./../data/core-mage.json";
 import CorePriest from "./../data/core-priest.json";
 import CoreRogue from "./../data/core-rogue.json";
+import { Mechanics } from "./common";
 
 const initialState = {
   self: {
@@ -10,7 +12,7 @@ const initialState = {
   },
   enemy: {
     handCards: [],
-    deckCards: CorePriest,
+    deckCards: CoreNeutral.filter(card=> card.mechanics && card.mechanics.includes(Mechanics.Taunt)),
   },
 };
 

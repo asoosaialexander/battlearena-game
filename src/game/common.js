@@ -1,7 +1,29 @@
+export const CardClass = [
+  "NEUTRAL",
+  "DEMONHUNTER",
+  "DRUID",
+  "HUNTER",
+  "MAGE",
+  "PALADIN",
+  "PRIEST",
+  "ROUGE",
+  "SHAMAN",
+  "WARLOCK",
+  "WARRIOR",
+];
+
 export const Deck = {
-  Common: "common",
-  Mage: "mage",
-  Druid: "druid",
+  Neutral: "NEUTRAL",
+  DemonHunter: "DEMONHUNTER",
+  Druid: "DRUID",
+  Hunter: "HUNTER",
+  Mage: "MAGE",
+  Paladin: "PALADIN",
+  Priest: "PRIEST",
+  Rouge: "ROUGE",
+  Shaman: "SHAMAN",
+  Warlock: "WARLOCK",
+  Warrior: "WARRIOR",
 };
 
 export const CardType = {
@@ -28,9 +50,12 @@ export const Mechanics = {
   Poisonous: "POISONOUS",
   Stealth: "STEALTH",
   Deathrattle: "DEATHRATTLE",
+  Taunt: "TAUNT",
 };
 
 export const Spell = {
   ArcaneIntellect: "Arcane Intellect",
   Flamestrike: "Flamestrike",
 };
+
+export const APIRoot = "";

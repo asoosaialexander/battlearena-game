@@ -5,11 +5,12 @@ import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import ArenaLayout from './game/ArenaLayout';
+import DeckBuilderLayout from './collection/DeckBuilderLayout';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ArenaLayout />
+      <DeckBuilderLayout />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

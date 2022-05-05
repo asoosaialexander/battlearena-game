@@ -1677,17 +1677,6 @@
         "type": "MINION"
     },
     {
-        "cardClass": "NEUTRAL",
-        "cost": 0,
-        "dbfId": 1746,
-        "flavor": "Whether you spend it or save it, it's always there for a second.",
-        "id": "GAME_005",
-        "name": "The Coin",
-        "set": "CORE",
-        "text": "Gain 1 Mana Crystal this turn only.",
-        "type": "SPELL"
-    },
-    {
         "artist": "John Dickenson",
         "attack": 2,
         "battlegroundsPremiumDbfId": 60025,
