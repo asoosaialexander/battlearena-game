@@ -1,7 +1,7 @@
 import {
   Button,
   Card,
-  CardActionArea,
+  CardActions,
   CardContent,
   CardHeader,
   Grid,
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { CardClass, CardType, Deck } from "../game/common";
+import { CardClass, Deck } from "../game/common";
 import CoreNeutral from "./../data/core-neutral.json";
 import CoreDemonHunter from "./../data/core-demonhunter.json";
 import CoreDruid from "./../data/core-druid.json";
@@ -25,8 +25,7 @@ import CoreRogue from "./../data/core-rogue.json";
 import CoreShaman from "./../data/core-shaman.json";
 import CoreWarlock from "./../data/core-warlock.json";
 import CoreWarrior from "./../data/core-warrior.json";
-import SpellCard from "../game/SpellCard";
-import MinionCard from "../game/MinionCard";
+import "./Layout.css";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,18 +47,12 @@ function TabPanel(props) {
   );
 }
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
 export default function DeckBuilderLayout() {
   const [value, setValue] = React.useState(Deck.DemonHunter);
   const [cards, setCards] = React.useState(CoreDemonHunter);
   const [pageNo, setPageNo] = React.useState(1);
   const [selectedCards, updateSelectedCards] = React.useState([]);
+  const [cardCount, setCardCount] = React.useState([]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -146,17 +139,46 @@ export default function DeckBuilderLayout() {
                       )
                       .map((card) => {
                         return (
-                          <Paper elevation={0}>
+                          <Paper key={card.id} elevation={0}>
                             <img
                               src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`}
                               alt="CardGraphics"
                               style={{ cursor: "pointer" }}
-                              onClick={() =>
+                              onClick={() => {
+                                let count = 0;
+                                for (let i = 0; i < selectedCards.length; i++) {
+                                  if (card.id === selectedCards[i].id)
+                                    count += 1;
+                                }
+                                if (
+                                  (card.rarity === "LEGENDARY" &&
+                                    count === 1) ||
+                                  (card.rarity !== "LEGENDARY" && count === 2)
+                                ) {
+                                  console.log("Max cards added!");
+                                  return;
+                                }
                                 updateSelectedCards((prevState) => [
                                   ...prevState,
                                   card,
-                                ])
-                              }
+                                ]);
+                                if (count === 0) {
+                                  setCardCount((prevState) => [
+                                    ...prevState,
+                                    {
+                                      id: card.id,
+                                      count: 1,
+                                    },
+                                  ]);
+                                } else {
+                                  setCardCount((prevState) => {
+                                    prevState.find(
+                                      (c) => c.id === card.id
+                                    ).count = 2;
+                                    return prevState;
+                                  });
+                                }
+                              }}
                             />
                           </Paper>
                         );
@@ -178,20 +200,31 @@ export default function DeckBuilderLayout() {
             <Card sx={{ p: 1, marginLeft: 1 }}>
               <CardHeader title="Custom Deck" subheader="Mage"></CardHeader>
               <CardContent>
-                {selectedCards.map((card) => (
-                  <img
+                {[...new Set(selectedCards)].map((card) => (
+                  <Paper
+                    elevation={0}
+                    sx={{ position: "relative" }}
                     key={card.id}
-                    src={`https://art.hearthstonejson.com/v1/tiles/${card.id}.jpg`}
-                    alt={card.name}
-                  />
+                  >
+                    <img
+                      className="selectedCard"
+                      src={`https://art.hearthstonejson.com/v1/tiles/${card.id}.jpg`}
+                      alt={card.name}
+                    />
+                    <Typography variant="body" className="noOfCards">
+                      {cardCount.find((c) => c.id === card.id).count}
+                    </Typography>
+                  </Paper>
                 ))}
               </CardContent>
-              <CardActionArea>
-                <Typography variant="overline">{selectedCards.length}/30 Cards</Typography>{" "}
+              <CardActions>
+                <Typography variant="h6">
+                  {selectedCards.length}/30 Cards
+                </Typography>
                 <Button size="large" variant="outlined" color="primary">
                   Save
                 </Button>
-              </CardActionArea>
+              </CardActions>
             </Card>
           </Grid>
         </Grid>
