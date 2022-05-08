@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
-import { CardType } from "./common";
+import { CardType } from "./../common/constants";
 import MinionCard from "./MinionCard";
 import SpellCard from "./SpellCard";
 import { selectSelfHand, selectEnemyHand } from "./playerSlice";

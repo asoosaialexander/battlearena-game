@@ -17,7 +17,7 @@ import AttackImg from "./../images/attack.png";
 import PoisonousImg from "./../images/icon_poisonous.png";
 import DeathratlleImg from "./../images/icon_deathrattle.png";
 import { Box } from "@mui/system";
-import { Mechanics, Rarity } from "./common";
+import { Mechanics, Rarity } from "./../common/constants";
 import {
   selectSelfMinions,
   selectEnemyMinions,

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Mechanics } from "./common";
+import { Mechanics } from "./../common/constants";
 
 const initialState = {
   selfEnergy: 1,

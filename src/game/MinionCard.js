@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import "./Card.css";
 import { playCard } from "./playerSlice";
 import { playMinion } from "./playAreaSlice";
-import { CardType } from "./common";
+import { APIRoot, CardType } from "./../common/constants";
 
 export default function MinionCard(props) {
   const { id, name, cost, attack, health, type, text } = props.card;
@@ -29,7 +29,7 @@ export default function MinionCard(props) {
     >
       <img
         className="minionImage"
-        src={`https://art.hearthstonejson.com/v1/256x/${id}.jpg`}
+        src={`${APIRoot}/256x/${id}.jpg`}
         alt="CardGraphics"
       />
       <Box className="commonMinion"></Box>

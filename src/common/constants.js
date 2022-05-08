@@ -58,4 +58,4 @@ export const Spell = {
   Flamestrike: "Flamestrike",
 };
 
-export const APIRoot = "";
+export const APIRoot = "https://art.hearthstonejson.com/v1";

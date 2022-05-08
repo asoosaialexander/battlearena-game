@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import "./Card.css";
-import { Spell } from "./common";
+import { Spell } from "./../common/constants";
 import { drawCard, playCard } from "./playerSlice";
 import { clearDeadMinions, attackAllMinionsWithDamage } from "./playAreaSlice";
 
