@@ -1,0 +1,115 @@
+.mContainer {
+  position: relative;
+  overflow: hidden;
+  height: 200px;
+  cursor: pointer;
+}
+
+.frame {
+  background: url("./../../images/legendMinion.png") 0 0;
+  height: 385px;
+  width: 330px;
+  zoom: 52%;
+}
+
+.heroFrame {
+  height: 200px;
+}
+
+.normalFrame {
+  background: url("./../../images/normalMinion.png") -45px -36px;
+  height: 260px;
+  width: 205px;
+  zoom: 72%;
+  margin-top: 10px;
+  align-self: baseline;
+}
+
+.attackImg {
+  position: absolute;
+  height: 45px;
+  top: 125px;
+  left: 8px;
+}
+
+.mAttack {
+  position: absolute;
+  font-weight: bold;
+  font-size: 28px;
+  top: 130px;
+  color: whitesmoke;
+  -webkit-text-stroke: 1px black;
+}
+
+.mAttack.single {
+  left: 25px;
+}
+.mAttack.double {
+  font-size: 28px;
+  left: 9px;
+}
+
+.healthImg1 {
+  position: absolute;
+  height: 40px;
+  top: 130px;
+  left: 90px;
+}
+
+.healthImg2 {
+  position: absolute;
+  height: 40px;
+  top: 130px;
+  left: 105px;
+}
+
+.mHealth {
+  position: absolute;
+  font-weight: bold;
+  font-size: 32px;
+  top: 128px;
+  color: whitesmoke;
+  -webkit-text-stroke: 1px black;
+}
+
+.mHealth.single1 {
+  left: 98px;
+}
+.mHealth.double1 {
+  font-size: 28px;
+  left: 138px;
+}
+
+.mHealth.single2 {
+  left: 112px;
+}
+.mHealth.double2 {
+  font-size: 28px;
+  left: 105px;
+}
+
+.mName {
+  position: absolute;
+  font-weight: bolder;
+  text-align: center;
+  top: 60px;
+  left: 20px;
+  height: 50px;
+  width: 110px;
+}
+
+.poisonous {
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  top: 40px;
+  left: -15px;
+}
+
+.deathrattle {
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  top: 40px;
+  left: -15px;
+}

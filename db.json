@@ -1,0 +1,22 @@
+{
+  "playerDecks": [
+    {
+      "id": 1,
+      "name": "CUSTOM MAGE",
+      "hero": "MAGE",
+      "cards": []
+    },
+    {
+      "id": 2,
+      "name": "CUSTOM DEMONHUNTER",
+      "hero": "DEMONHUNTER",
+      "cards": []
+    },
+    {
+      "id": 3,
+      "name": "CUSTOM DRUID",
+      "hero": "DRUID",
+      "cards": []
+    }
+  ]
+}

@@ -4,8 +4,8 @@ import './index.css';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import ArenaLayout from './game/ArenaLayout';
-import DeckBuilderLayout from './deckBuilder/DeckBuilderLayout';
+import ArenaLayout from './components/game/ArenaLayout';
+import DeckBuilderLayout from './components/deckBuilder/DeckBuilderLayout';
 
 ReactDOM.render(
   <React.StrictMode>
