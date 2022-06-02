@@ -1,16 +1,8 @@
-import {
-  Card,
-  Grid,
-  Pagination,
-  Paper,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Card, Grid, Pagination, Tab, Tabs, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { APIRoot, CardClass, Deck } from "../common/constants";
-import "./Layout.css";
+import { CardClass, Deck, Rarity } from "../common/constants";
+import "./DeckBuilderLayout.css";
 import CardFilter from "./CardFilter";
 import CoreNeutral from "../../data/core-neutral.json";
 import CoreDemonHunter from "../../data/core-demonhunter.json";
@@ -25,26 +17,8 @@ import CoreWarlock from "../../data/core-warlock.json";
 import CoreWarrior from "../../data/core-warrior.json";
 import CustomDeck from "./CustomDeck";
 import PlayerDecks from "./PlayerDecks";
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
+import TabPanel from "../common/TabPanel";
+import PlayerCard from "./PlayerCard";
 
 export default function DeckBuilderLayout() {
   const [value, setValue] = React.useState(Deck.DemonHunter);
@@ -62,14 +36,9 @@ export default function DeckBuilderLayout() {
   const [rougeCards, setRougeCards] = React.useState(CoreRogue);
   const [neutralCards, setNeutralCards] = React.useState(CoreNeutral);
   const [pageNo, setPageNo] = React.useState(1);
-  const [selectedDeck, updateSelectedDeck] = React.useState();
-  const [selectedCards, updateSelectedCards] = React.useState([]);
+  const [selectedDeck, updateSelectedDeck] = React.useState({});
   const [cardCount, setCardCount] = React.useState([]);
   const [showPlayerDecks, toggleShowPlayerDecks] = React.useState(true);
-
-  // useEffect(()=>{
-  //   dispatch(getAllPlayerDecks());
-  // })
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -110,165 +79,137 @@ export default function DeckBuilderLayout() {
     }
   };
 
+  const handleCardImgClick = (card) => {
+    // Click will work only if deck is selected
+    if (selectedDeck.cards) {
+      let count = 0;
+      for (let i = 0; i < selectedDeck.cards.length; i++) {
+        if (card.id === selectedDeck.cards[i].id) count += 1;
+      }
+      if (
+        (card.rarity === Rarity.Legendary && count === 1) ||
+        (card.rarity !== Rarity.Legendary && count === 2)
+      ) {
+        // Max cards added!! Cancel action!!
+        return;
+      }
+      updateSelectedDeck((prevState) => {
+        return { ...prevState, cards: [...prevState.cards, card] };
+      });
+    }
+  };
+
   return (
-    <Box>
-      <Card sx={{ m: 1, p: 1, boxShadow: 1 }}>
-        <Grid container sx={{ flexGrow: 1, alignItems: "flex-start" }}>
-          <Grid item xs={10}>
-            <Card sx={{ p: 1 }}>
-              <Grid
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Grid item sx={{ width: "100%" }}>
-                  <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                    <Tabs
-                      value={value}
-                      onChange={handleTabChange}
-                      aria-label="basic tabs example"
+    <Card sx={{ m: 1, p: 1, boxShadow: 1 }}>
+      <Grid container sx={{ flexGrow: 1, alignItems: "flex-start" }}>
+        <Grid item xs={10}>
+          <Card sx={{ p: 1 }}>
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Grid item sx={{ width: "100%" }}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <Tabs
+                    value={value}
+                    onChange={handleTabChange}
+                    aria-label="basic tabs example"
+                  >
+                    <Tab label={Deck.DemonHunter} value={Deck.DemonHunter} />
+                    <Tab label={Deck.Druid} value={Deck.Druid} />
+                    <Tab label={Deck.Hunter} value={Deck.Hunter} />
+                    <Tab label={Deck.Mage} value={Deck.Mage} />
+                    <Tab label={Deck.Paladin} value={Deck.Paladin} />
+                    <Tab label={Deck.Priest} value={Deck.Priest} />
+                    <Tab label={Deck.Rouge} value={Deck.Rouge} />
+                    <Tab label={Deck.Shaman} value={Deck.Warrior} />
+                    <Tab label={Deck.Warlock} value={Deck.Warlock} />
+                    <Tab label={Deck.Warrior} value={Deck.Warrior} />
+                    <Tab label={Deck.Neutral} value={Deck.Neutral} />
+                  </Tabs>
+                </Box>
+                {CardClass.map((index) => (
+                  <TabPanel key={index} value={value} index={index}>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-start"
+                      sx={{ minHeight: "260px" }}
                     >
-                      <Tab label={Deck.DemonHunter} value={Deck.DemonHunter} />
-                      <Tab label={Deck.Druid} value={Deck.Druid} />
-                      <Tab label={Deck.Hunter} value={Deck.Hunter} />
-                      <Tab label={Deck.Mage} value={Deck.Mage} />
-                      <Tab label={Deck.Paladin} value={Deck.Paladin} />
-                      <Tab label={Deck.Priest} value={Deck.Priest} />
-                      <Tab label={Deck.Rouge} value={Deck.Rouge} />
-                      <Tab label={Deck.Shaman} value={Deck.Warrior} />
-                      <Tab label={Deck.Warlock} value={Deck.Warlock} />
-                      <Tab label={Deck.Warrior} value={Deck.Warrior} />
-                      <Tab label={Deck.Neutral} value={Deck.Neutral} />
-                    </Tabs>
-                  </Box>
-                  {CardClass.map((index) => (
-                    <TabPanel key={index} value={value} index={index}>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="flex-start"
-                        sx={{ minHeight: "260px" }}
-                      >
-                        {cards.length === 0 && (
-                          <Typography variant="h5">No Cards Found.</Typography>
-                        )}
-                        {[...cards]
-                          .sort((a, b) =>
-                            a.cost < b.cost ? -1 : a.cost > b.cost ? 1 : 0
-                          )
-                          .slice(
-                            (pageNo - 1) * 12,
-                            cards.length - 12 * pageNo > 0
-                              ? (pageNo - 1) * 12 + 12
-                              : (pageNo - 1) * 12 +
-                                  (cards.length - 12 * (pageNo - 1))
-                          )
-                          .map((card) => {
-                            return (
-                              <Paper key={card.id} elevation={0}>
-                                <img
-                                  src={`${APIRoot}/render/latest/enUS/256x/${card.id}.png`}
-                                  alt="CardGraphics"
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => {
-                                    let count = 0;
-                                    for (
-                                      let i = 0;
-                                      i < selectedCards.length;
-                                      i++
-                                    ) {
-                                      if (card.id === selectedCards[i].id)
-                                        count += 1;
-                                    }
-                                    if (
-                                      (card.rarity === "LEGENDARY" &&
-                                        count === 1) ||
-                                      (card.rarity !== "LEGENDARY" &&
-                                        count === 2)
-                                    ) {
-                                      console.log("Max cards added!");
-                                      return;
-                                    }
-                                    updateSelectedCards((prevState) => [
-                                      ...prevState,
-                                      card,
-                                    ]);
-                                    if (count === 0) {
-                                      setCardCount((prevState) => [
-                                        ...prevState,
-                                        {
-                                          id: card.id,
-                                          count: 1,
-                                        },
-                                      ]);
-                                    } else {
-                                      setCardCount((prevState) => {
-                                        prevState.find(
-                                          (c) => c.id === card.id
-                                        ).count = 2;
-                                        return prevState;
-                                      });
-                                    }
-                                  }}
-                                />
-                              </Paper>
-                            );
-                          })}
-                      </Grid>
-                    </TabPanel>
-                  ))}
-                </Grid>
-                <Grid item>
-                  <Pagination
-                    count={Math.ceil(cards.length / 12)}
-                    variant="outlined"
-                    shape="rounded"
-                    size="large"
-                    page={pageNo}
-                    onChange={(e, page) => setPageNo(page)}
-                  />
-                </Grid>
-                <Grid item>
-                  <CardFilter
-                    selectedValue={value}
-                    actions={{
-                      setCards,
-                      setDemonHunterCards,
-                      setHunterCards,
-                      setMageCards,
-                      setDruidCards,
-                      setPaladinCards,
-                      setPriestCards,
-                      setRougeCards,
-                      setWarlockCards,
-                      setShamanCards,
-                      setWarriorCards,
-                      setNeutralCards,
-                    }}
-                  />
-                </Grid>
+                      {cards.length === 0 && (
+                        <Typography variant="h5">No Cards Found.</Typography>
+                      )}
+                      {[...cards]
+                        .sort((a, b) =>
+                          a.cost < b.cost ? -1 : a.cost > b.cost ? 1 : 0
+                        )
+                        .slice(
+                          (pageNo - 1) * 12,
+                          cards.length - 12 * pageNo > 0
+                            ? (pageNo - 1) * 12 + 12
+                            : (pageNo - 1) * 12 +
+                                (cards.length - 12 * (pageNo - 1))
+                        )
+                        .map((card) => (
+                          <PlayerCard
+                            key={card.id}
+                            card={card}
+                            handleClick={handleCardImgClick}
+                          />
+                        ))}
+                    </Grid>
+                  </TabPanel>
+                ))}
               </Grid>
-            </Card>
-          </Grid>
-          <Grid item xs={2} sx={{ alignItems: "center" }}>
-            {showPlayerDecks ? (
-              <PlayerDecks
-                toggleShowPlayerDecks={toggleShowPlayerDecks}
-                updateSelectedDeck={updateSelectedDeck}
-                updateSelectedCards={updateSelectedCards}
-              />
-            ) : (
-              <CustomDeck
-                deck={selectedDeck}
-                cards={selectedCards}
-                cardCount={cardCount}
-                toggleShowPlayerDecks={toggleShowPlayerDecks}
-              />
-            )}
-          </Grid>
+              <Grid item>
+                <Pagination
+                  count={Math.ceil(cards.length / 12)}
+                  variant="outlined"
+                  shape="rounded"
+                  size="large"
+                  page={pageNo}
+                  onChange={(e, page) => setPageNo(page)}
+                />
+              </Grid>
+              <Grid item>
+                <CardFilter
+                  selectedValue={value}
+                  actions={{
+                    setCards,
+                    setDemonHunterCards,
+                    setHunterCards,
+                    setMageCards,
+                    setDruidCards,
+                    setPaladinCards,
+                    setPriestCards,
+                    setRougeCards,
+                    setWarlockCards,
+                    setShamanCards,
+                    setWarriorCards,
+                    setNeutralCards,
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Card>
         </Grid>
-      </Card>
-    </Box>
+        <Grid item xs={2} sx={{ alignItems: "center" }}>
+          {showPlayerDecks ? (
+            <PlayerDecks
+              toggleShowPlayerDecks={toggleShowPlayerDecks}
+              updateSelectedDeck={updateSelectedDeck}
+            />
+          ) : (
+            <CustomDeck
+              deck={selectedDeck}
+              cardCount={cardCount}
+              toggleShowPlayerDecks={toggleShowPlayerDecks}
+            />
+          )}
+        </Grid>
+      </Grid>
+    </Card>
   );
 }

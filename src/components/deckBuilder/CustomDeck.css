@@ -1,0 +1,10 @@
+.deckName {
+  padding: 1px;
+  margin-bottom: 2px;
+  font-size: 36px !important;
+  text-align: center;
+  color: goldenrod;
+  font-variant: all-small-caps;
+  border: 1px black dotted;
+  border-radius: 5px;
+}

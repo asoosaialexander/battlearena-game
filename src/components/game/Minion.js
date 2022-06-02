@@ -22,7 +22,7 @@ import {
   selectSelfMinions,
   selectEnemyMinions,
   attackMinionWithMinion,
-  clearDeadMinions
+  clearDeadMinions,
 } from "./playAreaSlice";
 import { useDispatch, useSelector } from "react-redux";
 

@@ -8,10 +8,15 @@ export const playerDeckApi = createApi({
     getAllPlayerDecks: builder.query({
       query: () => "playerDecks",
     }),
-    // addPlayerDeck: builder.query({
-    //     query
-    // })
+    addPlayerDeck: builder.mutation({
+      query: ({id, ...newDeck}) => ({
+        url: "playerDecks/" + id,
+        method: "PUT",
+        body: newDeck,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllPlayerDecksQuery } = playerDeckApi;
+export const { useGetAllPlayerDecksQuery, useAddPlayerDeckMutation } =
+  playerDeckApi;

@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import CoreNeutral from "../../data/core-neutral.json";
 import CoreMage from "../../data/core-mage.json";
-import CorePriest from "../../data/core-priest.json";
-import CoreRogue from "../../data/core-rogue.json";
 import { Mechanics } from "../common/constants";
 
 const initialState = {

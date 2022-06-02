@@ -1,11 +1,7 @@
-import { Box, Button, Card, Divider, Grid } from "@mui/material";
+import { Box, Card, Divider, Grid } from "@mui/material";
 import React from "react";
 import PlayerArea from "./PlayerArea";
 import EnemyArea from "./EnemyArea";
-import { useSelector, useDispatch } from "react-redux";
-import { addPlayerMinion } from "./playAreaSlice";
-import { selectPlayerHand } from "./playerSlice";
-import { drawCard } from "./playerSlice";
 import PlayerHand from "./playerHand";
 import CardDeck from "./cardDeck";
 import PlayerHero from "./playerHero";
