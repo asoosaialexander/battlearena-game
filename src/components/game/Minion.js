@@ -136,12 +136,10 @@ export default function Minion(props) {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Target</InputLabel>
+            <InputLabel>Target</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
