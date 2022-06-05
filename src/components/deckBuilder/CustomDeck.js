@@ -11,7 +11,7 @@ import { APIRoot } from "../common/constants";
 import "./CustomDeck.css";
 import { useAddPlayerDeckMutation } from "../../services/playerDeck";
 
-export default function CustomDeck({ deck, toggleShowPlayerDecks }) {
+export default function CustomDeck({ deck, handleBackClick }) {
   const [deckName, changeDeckName] = React.useState(deck.name);
   const [
     updateDeck, // This is the mutation trigger
@@ -69,7 +69,7 @@ export default function CustomDeck({ deck, toggleShowPlayerDecks }) {
           color="primary"
           onClick={() => {
             updateDeck({ id, ...deck, name: deckName });
-            toggleShowPlayerDecks(true);
+            handleBackClick();
           }}
         >
           Save
@@ -78,7 +78,7 @@ export default function CustomDeck({ deck, toggleShowPlayerDecks }) {
           size="large"
           variant="outlined"
           color="secondary"
-          onClick={() => toggleShowPlayerDecks(true)}
+          onClick={handleBackClick}
         >
           Back
         </Button>

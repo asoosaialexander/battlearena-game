@@ -273,10 +273,10 @@
       "cards": []
     },
     {
-      "id": 3,
-      "name": "CUSTOM DRUID",
+      "name": "CUSTOM DRUIDS",
       "hero": "DRUID",
-      "cards": []
+      "cards": [],
+      "id": 3
     }
   ]
 }

@@ -1,5 +1,4 @@
 export const CardClass = [
-  "NEUTRAL",
   "DEMONHUNTER",
   "DRUID",
   "HUNTER",
@@ -10,6 +9,7 @@ export const CardClass = [
   "SHAMAN",
   "WARLOCK",
   "WARRIOR",
+  "NEUTRAL",
 ];
 
 export const Deck = {

@@ -1,19 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import { store } from './app/store';
-import { Provider } from 'react-redux';
-import * as serviceWorker from './serviceWorker';
-import ArenaLayout from './components/game/ArenaLayout';
-import DeckBuilderLayout from './components/deckBuilder/DeckBuilderLayout';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import { store } from "./app/store";
+import { Provider } from "react-redux";
+import * as serviceWorker from "./serviceWorker";
+import ArenaLayout from "./components/game/ArenaLayout";
+import DeckBuilderLayout from "./components/deckBuilder/DeckBuilderLayout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./components/Home";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <DeckBuilderLayout />
+      <Router>
+        <Routes>
+          <Route path="/play" element={<ArenaLayout />} />
+          <Route path="/collection" element={<DeckBuilderLayout />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Router>
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

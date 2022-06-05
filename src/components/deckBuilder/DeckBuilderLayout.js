@@ -37,7 +37,6 @@ export default function DeckBuilderLayout() {
   const [neutralCards, setNeutralCards] = React.useState(CoreNeutral);
   const [pageNo, setPageNo] = React.useState(1);
   const [selectedDeck, updateSelectedDeck] = React.useState({});
-  const [cardCount, setCardCount] = React.useState([]);
   const [showPlayerDecks, toggleShowPlayerDecks] = React.useState(true);
 
   const handleTabChange = (event, newValue) => {
@@ -117,17 +116,9 @@ export default function DeckBuilderLayout() {
                     onChange={handleTabChange}
                     aria-label="basic tabs example"
                   >
-                    <Tab label={Deck.DemonHunter} value={Deck.DemonHunter} />
-                    <Tab label={Deck.Druid} value={Deck.Druid} />
-                    <Tab label={Deck.Hunter} value={Deck.Hunter} />
-                    <Tab label={Deck.Mage} value={Deck.Mage} />
-                    <Tab label={Deck.Paladin} value={Deck.Paladin} />
-                    <Tab label={Deck.Priest} value={Deck.Priest} />
-                    <Tab label={Deck.Rouge} value={Deck.Rouge} />
-                    <Tab label={Deck.Shaman} value={Deck.Warrior} />
-                    <Tab label={Deck.Warlock} value={Deck.Warlock} />
-                    <Tab label={Deck.Warrior} value={Deck.Warrior} />
-                    <Tab label={Deck.Neutral} value={Deck.Neutral} />
+                    {CardClass.map((item, index) => (
+                      <Tab key={index} label={item} value={item} />
+                    ))}
                   </Tabs>
                 </Box>
                 {CardClass.map((index) => (
@@ -204,8 +195,7 @@ export default function DeckBuilderLayout() {
           ) : (
             <CustomDeck
               deck={selectedDeck}
-              cardCount={cardCount}
-              toggleShowPlayerDecks={toggleShowPlayerDecks}
+              handleBackClick={() => toggleShowPlayerDecks(true)}
             />
           )}
         </Grid>
