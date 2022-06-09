@@ -13,27 +13,32 @@ export default function Home() {
           fontVariant: "small-caps",
           color: "goldenrod",
           fontWeight: "bold",
+          fontFamily: "Belwe Bd BT",
         }}
       >
         Battle Arena
       </Typography>
       <Stack spacing={2} sx={{ m: 10 }}>
         <Button
+          variant="outlined"
           fullWidth
           sx={{
             fontSize: 36,
+            fontFamily: "Belwe Bd BT",
           }}
           onClick={(e) => {
             e.preventDefault();
-            navigate("/heroSelection");
+            navigate("/play");
           }}
         >
           Play
         </Button>
         <Button
+          variant="outlined"
           fullWidth
           sx={{
             fontSize: 36,
+            fontFamily: "Belwe Bd BT",
           }}
           onClick={(e) => {
             e.preventDefault();

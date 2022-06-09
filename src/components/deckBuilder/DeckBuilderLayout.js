@@ -98,6 +98,57 @@ export default function DeckBuilderLayout() {
     }
   };
 
+  let TabHeader;
+  let TabContent;
+  const TabContentCards = (
+    <Grid
+      container
+      direction="row"
+      justifyContent="flex-start"
+      sx={{ minHeight: "260px" }}
+    >
+      {cards.length === 0 && (
+        <Typography variant="h5">No Cards Found.</Typography>
+      )}
+      {[...cards]
+        .sort((a, b) => (a.cost < b.cost ? -1 : a.cost > b.cost ? 1 : 0))
+        .slice(
+          (pageNo - 1) * 12,
+          cards.length - 12 * pageNo > 0
+            ? (pageNo - 1) * 12 + 12
+            : (pageNo - 1) * 12 + (cards.length - 12 * (pageNo - 1))
+        )
+        .map((card) => (
+          <PlayerCard
+            key={card.id}
+            card={card}
+            handleClick={handleCardImgClick}
+          />
+        ))}
+    </Grid>
+  );
+
+  // Update Tab header and content based on selected deck
+  if (showPlayerDecks) {
+    TabHeader = CardClass.map((item, index) => (
+      <Tab key={index} label={item} value={item} />
+    ));
+    TabContent = CardClass.map((index) => (
+      <TabPanel key={index} value={value} index={index}>
+        {TabContentCards}
+      </TabPanel>
+    ));
+  } else {
+    TabHeader = [selectedDeck.hero, Deck.Neutral].map((item, index) => (
+      <Tab key={index} label={item} value={item} />
+    ));
+    TabContent = [selectedDeck.hero, Deck.Neutral].map((index) => (
+      <TabPanel key={index} value={value} index={index}>
+        {TabContentCards}
+      </TabPanel>
+    ));
+  }
+
   return (
     <Card sx={{ m: 1, p: 1, boxShadow: 1 }}>
       <Grid container sx={{ flexGrow: 1, alignItems: "flex-start" }}>
@@ -116,44 +167,11 @@ export default function DeckBuilderLayout() {
                     onChange={handleTabChange}
                     aria-label="basic tabs example"
                   >
-                    {CardClass.map((item, index) => (
-                      <Tab key={index} label={item} value={item} />
-                    ))}
+                    {TabHeader}
                   </Tabs>
                 </Box>
-                {CardClass.map((index) => (
-                  <TabPanel key={index} value={value} index={index}>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-start"
-                      sx={{ minHeight: "260px" }}
-                    >
-                      {cards.length === 0 && (
-                        <Typography variant="h5">No Cards Found.</Typography>
-                      )}
-                      {[...cards]
-                        .sort((a, b) =>
-                          a.cost < b.cost ? -1 : a.cost > b.cost ? 1 : 0
-                        )
-                        .slice(
-                          (pageNo - 1) * 12,
-                          cards.length - 12 * pageNo > 0
-                            ? (pageNo - 1) * 12 + 12
-                            : (pageNo - 1) * 12 +
-                                (cards.length - 12 * (pageNo - 1))
-                        )
-                        .map((card) => (
-                          <PlayerCard
-                            key={card.id}
-                            card={card}
-                            handleClick={handleCardImgClick}
-                          />
-                        ))}
-                    </Grid>
-                  </TabPanel>
-                ))}
               </Grid>
+              {TabContent}
               <Grid item>
                 <Pagination
                   count={Math.ceil(cards.length / 12)}
@@ -191,6 +209,7 @@ export default function DeckBuilderLayout() {
             <PlayerDecks
               toggleShowPlayerDecks={toggleShowPlayerDecks}
               updateSelectedDeck={updateSelectedDeck}
+              updateTabContent={(value) => handleTabChange(null, value)}
             />
           ) : (
             <CustomDeck

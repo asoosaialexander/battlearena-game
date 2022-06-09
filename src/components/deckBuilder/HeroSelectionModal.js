@@ -1,4 +1,4 @@
-import { Button, Card, Grid, Typography } from "@mui/material";
+import { Button, Card, Grid, Modal, Typography } from "@mui/material";
 import { CardClass, Deck } from "../common/constants";
 import DemonHunter from "./../../images/Demon_Hunter_icon.webp";
 import Hunter from "./../../images/Hunter_icon.webp";
@@ -31,6 +31,7 @@ import PriestPower from "./../../images/Hero/HERO_09bp.webp";
 import DemonHunterHero from "./../../images/Hero/HERO_10.webp";
 import DemonHunterPower from "./../../images/Hero/HERO_10bp.webp";
 import React, { useState } from "react";
+import Styles from "./HeroSelectionModal.module.css";
 
 function Hero({ name, hero, setHero }) {
   const getImageSrc = (deckName) => {
@@ -89,7 +90,11 @@ function Hero({ name, hero, setHero }) {
   );
 }
 
-export default function HeroSelectionlayout() {
+export default function HeroSelectionModal({
+  isOpen,
+  handleOkClick,
+  handleCancelClick,
+}) {
   const [selectedHero, setSelectedHero] = useState("");
   const getHeroImages = () => {
     switch (selectedHero) {
@@ -168,58 +173,89 @@ export default function HeroSelectionlayout() {
     }
   };
   return (
-    <Card sx={{ m: 1, p: 1, boxShadow: 1 }}>
-      <Grid container sx={{ flexGrow: 1, alignItems: "flex-start" }}>
-        <Grid item xs={8}>
-          <Typography
-            variant="h5"
-            sx={{ m: 2, fontWeight: "bold", textAlign: "center" }}
-          >
-            Choose Your Hero
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            sx={{ minHeight: "260px" }}
-          >
-            {CardClass.filter((card) => card !== Deck.Neutral).map(
-              (hero, index) => (
-                <Hero
-                  key={index}
-                  name={hero}
-                  hero={selectedHero}
-                  setHero={setSelectedHero}
-                />
-              )
-            )}
-          </Grid>
-        </Grid>
-        <Grid container xs={4}>
-          <Grid xs={12}>
-            <Card
-              variant="outlined"
+    <Modal open={isOpen} onClose={handleCancelClick} sx={{ width: 1400 }}>
+      <Card className={Styles["modal-content"]}>
+        <Grid container sx={{ flexGrow: 1, alignItems: "flex-start" }}>
+          <Grid item xs={8}>
+            <Typography
+              variant="h5"
               sx={{
                 m: 2,
-                alignSelf: "center",
+                fontWeight: "bold",
                 textAlign: "center",
-                verticalAlign: "middle",
               }}
             >
-              {getHeroImages()}
-            </Card>
-          </Grid>
-          <Grid xs={12} sx={{ textAlign: "center" }}>
-            <Button
-              variant="outlined"
-              sx={{ fontSize: 24, fontWeight: "bold" }}
+              Choose Your Hero
+            </Typography>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              sx={{ minHeight: "260px" }}
             >
-              Choose
-            </Button>{" "}
-            <Button variant="outlined">Back</Button>
+              {CardClass.filter((card) => card !== Deck.Neutral).map(
+                (hero, index) => (
+                  <Hero
+                    key={index}
+                    name={hero}
+                    hero={selectedHero}
+                    setHero={setSelectedHero}
+                  />
+                )
+              )}
+            </Grid>
+          </Grid>
+          <Grid item xs={4}>
+            <Grid
+              container
+              sx={{ alignContent: "center", textAlign: "center" }}
+            >
+              <Grid item xs={12}>
+                <Card
+                  variant="outlined"
+                  sx={{
+                    m: 2,
+                    minHeight: 700,
+                  }}
+                >
+                  {selectedHero ? (
+                    getHeroImages()
+                  ) : (
+                    <Typography variant="h6" sx={{ paddingTop: 5 }}>
+                      Click on hero to select
+                    </Typography>
+                  )}
+                </Card>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  variant="outlined"
+                  sx={{
+                    fontSize: 24,
+                    fontWeight: "bold",
+                    fontFamily: "Belwe Bd BT",
+                  }}
+                  onClick={() => handleOkClick(selectedHero)}
+                >
+                  Choose
+                </Button>{" "}
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  sx={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    fontFamily: "Belwe Bd BT",
+                  }}
+                  onClick={handleCancelClick}
+                >
+                  Back
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Card>
+      </Card>
+    </Modal>
   );
 }

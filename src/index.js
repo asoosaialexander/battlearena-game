@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "./fonts/BelweBoldBT.ttf";
 import "./index.css";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
@@ -8,7 +9,7 @@ import ArenaLayout from "./components/game/ArenaLayout";
 import DeckBuilderLayout from "./components/deckBuilder/DeckBuilderLayout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
-import HeroSelectionlayout from "./components/game/HeroSelectionLayout";
+import HeroSelectionlayout from "./components/deckBuilder/HeroSelectionModal";
 
 ReactDOM.render(
   <React.StrictMode>

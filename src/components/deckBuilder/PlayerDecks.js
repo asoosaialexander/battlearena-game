@@ -2,12 +2,12 @@ import { Button, Card, CardContent, Typography } from "@mui/material";
 import React from "react";
 import ReactDOM from "react-dom";
 import { useGetAllPlayerDecksQuery } from "../../services/playerDeck";
-import { CardClass } from "../common/constants";
-import SelectionModal from "../common/SelectionModal";
+import HeroSelectionModal from "./HeroSelectionModal";
 
 export default function PlayerDecks({
   toggleShowPlayerDecks,
   updateSelectedDeck,
+  updateTabContent,
 }) {
   const [isOpen, setOpen] = React.useState(false);
   const { data, error, isLoading } = useGetAllPlayerDecksQuery();
@@ -20,6 +20,7 @@ export default function PlayerDecks({
       cards: [],
     });
     toggleShowPlayerDecks(false);
+    updateTabContent(hero);
   };
 
   return (
@@ -39,6 +40,7 @@ export default function PlayerDecks({
                   onClick={() => {
                     updateSelectedDeck(deck);
                     toggleShowPlayerDecks(false);
+                    updateTabContent(deck.hero);
                   }}
                 >
                   <Typography variant="h6">{deck.name}</Typography>
@@ -61,9 +63,7 @@ export default function PlayerDecks({
       </Card>
       {isOpen &&
         ReactDOM.createPortal(
-          <SelectionModal
-            headingText={"Select Hero"}
-            selectionList={CardClass}
+          <HeroSelectionModal
             isOpen={isOpen}
             handleOkClick={addNewDeck}
             handleCancelClick={() => setOpen(false)}
