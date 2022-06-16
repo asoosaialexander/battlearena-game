@@ -11,10 +11,10 @@ import { APIRoot } from "../common/constants";
 import "./CustomDeck.css";
 import { useAddPlayerDeckMutation } from "../../services/playerDeck";
 
-export default function CustomDeck({ deck, handleBackClick }) {
+export default function CustomDeck({ deck, updateDeck, handleBackClick }) {
   const [deckName, changeDeckName] = React.useState(deck.name);
   const [
-    updateDeck, // This is the mutation trigger
+    modifyDeck, // This is the mutation trigger
     { isLoading: isUpdating }, // This is the destructured mutation result
   ] = useAddPlayerDeckMutation();
   const { id, cards } = deck;
@@ -49,7 +49,23 @@ export default function CustomDeck({ deck, handleBackClick }) {
           </Typography>
         )}
         {uniqueCards.map((card) => (
-          <Paper elevation={0} sx={{ position: "relative" }} key={card.id}>
+          <Paper
+            elevation={0}
+            sx={{ position: "relative", cursor: "pointer" }}
+            key={card.id}
+            onClick={() => {
+              updateDeck((prevValue) => {
+                const index = cards.indexOf(
+                  cards.find((c) => c.id === card.id)
+                );
+                //Copy before update since 'cards' is state obj and shouldn't be updated directly
+                const cardsCopy = [...cards];
+                //Remove selected card
+                cardsCopy.splice(index, 1);
+                return { ...prevValue, cards: cardsCopy };
+              });
+            }}
+          >
             <img
               className="selectedCard"
               src={`${APIRoot}/tiles/${card.id}.jpg`}
@@ -60,7 +76,11 @@ export default function CustomDeck({ deck, handleBackClick }) {
             </Typography>
           </Paper>
         ))}
-        <Typography variant="h6" display="block">
+        <Typography
+          variant="h6"
+          display="block"
+          sx={{ marginBottom: 2, marginTop: 1, fontWeight: "bold" }}
+        >
           {cards.length}/30 Cards
         </Typography>
         <Button

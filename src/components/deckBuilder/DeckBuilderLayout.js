@@ -79,8 +79,8 @@ export default function DeckBuilderLayout() {
   };
 
   const handleCardImgClick = (card) => {
-    // Click will work only if deck is selected
-    if (selectedDeck.cards) {
+    // Click will work only if deck is selected & deck has less than 30 cards
+    if (selectedDeck.cards && selectedDeck.cards.length < 30) {
       let count = 0;
       for (let i = 0; i < selectedDeck.cards.length; i++) {
         if (card.id === selectedDeck.cards[i].id) count += 1;
@@ -214,6 +214,7 @@ export default function DeckBuilderLayout() {
           ) : (
             <CustomDeck
               deck={selectedDeck}
+              updateDeck={updateSelectedDeck}
               handleBackClick={() => toggleShowPlayerDecks(true)}
             />
           )}
