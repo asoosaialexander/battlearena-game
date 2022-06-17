@@ -1,22 +1,24 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ServerRoot } from "../components/common/constants";
+import axios from "axios";
 
-export const playerDeckApi = createApi({
-  reducerPath: "playerDeckApi",
-  baseQuery: fetchBaseQuery({ baseUrl: ServerRoot }),
-  endpoints: (builder) => ({
-    getAllPlayerDecks: builder.query({
-      query: () => "playerDecks",
-    }),
-    addPlayerDeck: builder.mutation({
-      query: ({id, ...newDeck}) => ({
-        url: "playerDecks/" + id,
-        method: "PUT",
-        body: newDeck,
-      }),
-    }),
-  }),
-});
+const playerDeckApi = {
+  getAllPlayerDecks: () => axios.get(ServerRoot + "playerDecks"),
+  addPlayerDeck: (deck) => {
+    axios.post(ServerRoot + "playerDecks", deck).then((res) => {
+      console.log(`${res.status} ${res.statusText}`);
+    });
+  },
+  updatePlayerDeck: (deck) => {
+    axios.put(ServerRoot + "playerDecks/" + deck.id, deck).then((res) => {
+      console.log(`${res.status} ${res.statusText}`);
+    });
+  },
+  deletePlayerDeck: (id) => {
+    axios.delete(ServerRoot + "playerDecks/" + id).then((res) => {
+      console.log(`${res.status} ${res.statusText}`);
+    });
+  },
+};
 
-export const { useGetAllPlayerDecksQuery, useAddPlayerDeckMutation } =
+export const { getAllPlayerDecks, addPlayerDeck, updatePlayerDeck, deletePlayerDeck } =
   playerDeckApi;

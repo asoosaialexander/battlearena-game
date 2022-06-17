@@ -9,15 +9,11 @@ import {
 } from "@mui/material";
 import { APIRoot } from "../common/constants";
 import "./CustomDeck.css";
-import { useAddPlayerDeckMutation } from "../../services/playerDeck";
+import { updatePlayerDeck } from "../../services/playerDeck";
 
 export default function CustomDeck({ deck, updateDeck, handleBackClick }) {
   const [deckName, changeDeckName] = React.useState(deck.name);
-  const [
-    modifyDeck, // This is the mutation trigger
-    { isLoading: isUpdating }, // This is the destructured mutation result
-  ] = useAddPlayerDeckMutation();
-  const { id, cards } = deck;
+  const { cards } = deck;
 
   const cardsWithCount = cards.map((card) => {
     if (cards.filter((c) => c.id === card.id).length === 1)
@@ -88,7 +84,7 @@ export default function CustomDeck({ deck, updateDeck, handleBackClick }) {
           variant="outlined"
           color="primary"
           onClick={() => {
-            updateDeck({ id, ...deck, name: deckName });
+            updatePlayerDeck({ ...deck, name: deckName });
             handleBackClick();
           }}
         >

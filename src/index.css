@@ -15,6 +15,6 @@ code {
 
 @font-face {
   font-family: "Belwe Bd BT";
-  src: local("Belwe Bd BT"), url("./fonts/BelweBoldBT.ttf") format("truetype");
+  src: local("Belwe Bd BT"), url("fonts/BelweBoldBT.ttf") format("truetype");
   font-weight: bold;
 }
