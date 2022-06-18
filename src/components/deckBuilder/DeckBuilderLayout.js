@@ -33,7 +33,7 @@ export default function DeckBuilderLayout() {
   const [warriorCards, setWarriorCards] = React.useState(CoreWarrior);
   const [warlockCards, setWarlockCards] = React.useState(CoreWarlock);
   const [shamanCards, setShamanCards] = React.useState(CoreShaman);
-  const [rougeCards, setRougeCards] = React.useState(CoreRogue);
+  const [rogueCards, setRogueCards] = React.useState(CoreRogue);
   const [neutralCards, setNeutralCards] = React.useState(CoreNeutral);
   const [pageNo, setPageNo] = React.useState(1);
   const [selectedDeck, updateSelectedDeck] = React.useState({});
@@ -61,8 +61,8 @@ export default function DeckBuilderLayout() {
       case Deck.Priest:
         setCards(priestCards);
         break;
-      case Deck.Rouge:
-        setCards(rougeCards);
+      case Deck.Rogue:
+        setCards(rogueCards);
         break;
       case Deck.Shaman:
         setCards(shamanCards);
@@ -193,7 +193,7 @@ export default function DeckBuilderLayout() {
                     setDruidCards,
                     setPaladinCards,
                     setPriestCards,
-                    setRougeCards,
+                    setRogueCards,
                     setWarlockCards,
                     setShamanCards,
                     setWarriorCards,

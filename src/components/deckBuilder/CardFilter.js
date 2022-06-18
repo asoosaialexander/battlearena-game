@@ -17,111 +17,85 @@ import { Deck } from "../common/constants";
 
 export default function CardFilter({ selectedValue, actions }) {
   const [filterText, setFilterText] = React.useState("");
-  const filterCost = (cost) => {
-    if (cost === "7+") {
-      actions.setDemonHunterCards(
-        CoreDemonHunter.filter((card) => card.cost >= 7)
-      );
-      actions.setDruidCards(CoreDruid.filter((card) => card.cost >= 7));
-      actions.setHunterCards(CoreHunter.filter((card) => card.cost >= 7));
-      actions.setMageCards(CoreMage.filter((card) => card.cost >= 7));
-      actions.setPaladinCards(CorePaladin.filter((card) => card.cost >= 7));
-      actions.setPriestCards(CorePriest.filter((card) => card.cost >= 7));
-      actions.setRougeCards(CoreRogue.filter((card) => card.cost >= 7));
-      actions.setShamanCards(CoreShaman.filter((card) => card.cost >= 7));
-      actions.setWarlockCards(CoreWarlock.filter((card) => card.cost >= 7));
-      actions.setWarriorCards(CoreWarrior.filter((card) => card.cost >= 7));
-      actions.setNeutralCards(CoreNeutral.filter((card) => card.cost >= 7));
-      switch (selectedValue) {
-        case Deck.DemonHunter:
-          actions.setCards(CoreDemonHunter.filter((card) => card.cost >= 7));
-          break;
-        case Deck.Druid:
-          actions.setCards(CoreDruid.filter((card) => card.cost >= 7));
-          break;
-        case Deck.Hunter:
-          actions.setCards(CoreHunter.filter((card) => card.cost >= 7));
-          break;
-        case Deck.Mage:
-          actions.setCards(CoreMage.filter((card) => card.cost >= 7));
-          break;
-        case Deck.Paladin:
-          actions.setCards(CorePaladin.filter((card) => card.cost >= 7));
-          break;
-        case Deck.Priest:
-          actions.setCards(CorePriest.filter((card) => card.cost >= 7));
-          break;
-        case Deck.Rouge:
-          actions.setCards(CoreRogue.filter((card) => card.cost >= 7));
-          break;
-        case Deck.Shaman:
-          actions.setCards(CoreShaman.filter((card) => card.cost >= 7));
-          break;
-        case Deck.Warlock:
-          actions.setCards(CoreWarlock.filter((card) => card.cost >= 7));
-          break;
-        case Deck.Warrior:
-          actions.setCards(CoreWarrior.filter((card) => card.cost >= 7));
-          break;
-        default:
-          actions.setCards(CoreNeutral.filter((card) => card.cost >= 7));
-      }
-    } else {
-      actions.setCards(CoreDemonHunter.filter((card) => card.cost === cost));
-      actions.setDemonHunterCards(
-        CoreDemonHunter.filter((card) => card.cost === cost)
-      );
-      actions.setDruidCards(CoreDruid.filter((card) => card.cost === cost));
-      actions.setHunterCards(CoreHunter.filter((card) => card.cost === cost));
-      actions.setMageCards(CoreMage.filter((card) => card.cost === cost));
-      actions.setPaladinCards(CorePaladin.filter((card) => card.cost === cost));
-      actions.setPriestCards(CorePriest.filter((card) => card.cost === cost));
-      actions.setRougeCards(CoreRogue.filter((card) => card.cost === cost));
-      actions.setShamanCards(CoreShaman.filter((card) => card.cost === cost));
-      actions.setWarlockCards(CoreWarlock.filter((card) => card.cost === cost));
-      actions.setWarriorCards(CoreWarrior.filter((card) => card.cost === cost));
-      actions.setNeutralCards(CoreNeutral.filter((card) => card.cost === cost));
-      switch (selectedValue) {
-        case Deck.DemonHunter:
-          actions.setCards(
-            CoreDemonHunter.filter((card) => card.cost === cost)
-          );
-          break;
-        case Deck.Druid:
-          actions.setCards(CoreDruid.filter((card) => card.cost === cost));
-          break;
-        case Deck.Hunter:
-          actions.setCards(CoreHunter.filter((card) => card.cost === cost));
-          break;
-        case Deck.Mage:
-          actions.setCards(CoreMage.filter((card) => card.cost === cost));
-          break;
-        case Deck.Paladin:
-          actions.setCards(CorePaladin.filter((card) => card.cost === cost));
-          break;
-        case Deck.Priest:
-          actions.setCards(CorePriest.filter((card) => card.cost === cost));
-          break;
-        case Deck.Rouge:
-          actions.setCards(CoreRogue.filter((card) => card.cost === cost));
-          break;
-        case Deck.Shaman:
-          actions.setCards(CoreShaman.filter((card) => card.cost === cost));
-          break;
-        case Deck.Warlock:
-          actions.setCards(CoreWarlock.filter((card) => card.cost === cost));
-          break;
-        case Deck.Warrior:
-          actions.setCards(CoreWarrior.filter((card) => card.cost === cost));
-          break;
-        default:
-          actions.setCards(CoreNeutral.filter((card) => card.cost === cost));
-      }
+  const [filterCost, setFilterCost] = React.useState();
+  const filterCards = (filterAction) => {
+    actions.setDemonHunterCards(
+      CoreDemonHunter.filter((card) => filterAction(card))
+    );
+    actions.setDruidCards(CoreDruid.filter((card) => filterAction(card)));
+    actions.setHunterCards(CoreHunter.filter((card) => filterAction(card)));
+    actions.setMageCards(CoreMage.filter((card) => filterAction(card)));
+    actions.setPaladinCards(CorePaladin.filter((card) => filterAction(card)));
+    actions.setPriestCards(CorePriest.filter((card) => filterAction(card)));
+    actions.setRogueCards(CoreRogue.filter((card) => filterAction(card)));
+    actions.setShamanCards(CoreShaman.filter((card) => filterAction(card)));
+    actions.setWarlockCards(CoreWarlock.filter((card) => filterAction(card)));
+    actions.setWarriorCards(CoreWarrior.filter((card) => filterAction(card)));
+    actions.setNeutralCards(CoreNeutral.filter((card) => filterAction(card)));
+    switch (selectedValue) {
+      case Deck.DemonHunter:
+        actions.setCards(CoreDemonHunter.filter((card) => filterAction(card)));
+        break;
+      case Deck.Druid:
+        actions.setCards(CoreDruid.filter((card) => filterAction(card)));
+        break;
+      case Deck.Hunter:
+        actions.setCards(CoreHunter.filter((card) => filterAction(card)));
+        break;
+      case Deck.Mage:
+        actions.setCards(CoreMage.filter((card) => filterAction(card)));
+        break;
+      case Deck.Paladin:
+        actions.setCards(CorePaladin.filter((card) => filterAction(card)));
+        break;
+      case Deck.Priest:
+        actions.setCards(CorePriest.filter((card) => filterAction(card)));
+        break;
+      case Deck.Rogue:
+        actions.setCards(CoreRogue.filter((card) => filterAction(card)));
+        break;
+      case Deck.Shaman:
+        actions.setCards(CoreShaman.filter((card) => filterAction(card)));
+        break;
+      case Deck.Warlock:
+        actions.setCards(CoreWarlock.filter((card) => filterAction(card)));
+        break;
+      case Deck.Warrior:
+        actions.setCards(CoreWarrior.filter((card) => filterAction(card)));
+        break;
+      default:
+        actions.setCards(CoreNeutral.filter((card) => filterAction(card)));
     }
+  };
+  const filterCardsByCost = (cost) => {
+    const fn = (card) => {
+      switch (cost) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+          return card.cost === cost;
+        case "7+":
+          return card.cost >= 7;
+        default:
+          return true;
+      }
+    };
+    filterCards(fn);
+  };
+  const filterCardsByText = (text) => {
+    const fn = (card) =>
+      card.name.toLowerCase().includes(text.toLowerCase()) ||
+      (card.rarity && card.rarity.toLowerCase().includes(text.toLowerCase())) ||
+      (card.text && card.text.toLowerCase().includes(text.toLowerCase()));
+    filterCards(fn);
   };
   return (
     <Box sx={{ textAlign: "center" }}>
-      {[1, 2, 3, 4, 5, 6].map((cost, index) => (
+      {[0, 1, 2, 3, 4, 5, 6].map((cost, index) => (
         <Box
           key={index}
           sx={{
@@ -129,10 +103,28 @@ export default function CardFilter({ selectedValue, actions }) {
             display: "inline",
             cursor: "pointer",
           }}
-          onClick={() => filterCost(cost)}
+          onClick={() => {
+            if (filterCost === cost) {
+              setFilterCost("");
+              filterCardsByCost("");
+            } else {
+              setFilterCost(cost);
+              filterCardsByCost(cost);
+            }
+          }}
         >
-          <img className="costImg" src={GemImage} alt={`cost${cost}`} />
-          <Typography variant="body" className="costValue">
+          <img
+            className="costImg"
+            src={GemImage}
+            alt={`cost${cost}`}
+            style={{
+              border: filterCost === cost ? "4px goldenrod solid" : "",
+            }}
+          />
+          <Typography
+            variant="body"
+            className={`costValue ${filterCost === cost ? "selected" : ""}`}
+          >
             {cost}
           </Typography>
         </Box>
@@ -143,9 +135,19 @@ export default function CardFilter({ selectedValue, actions }) {
           display: "inline",
           cursor: "pointer",
         }}
-        onClick={() => filterCost("7+")}
+        onClick={() => {
+          setFilterCost("7+");
+          filterCardsByCost("7+");
+        }}
       >
-        <img className="costImg" src={GemImage} alt={`cost7+`} />
+        <img
+          className="costImg"
+          src={GemImage}
+          alt={`cost7+`}
+          style={{
+            border: filterCost === "7+" ? "4px goldenrod solid" : "",
+          }}
+        />
         <Typography variant="body" className="costValue seven">
           {"7+"}
         </Typography>
@@ -155,7 +157,10 @@ export default function CardFilter({ selectedValue, actions }) {
         variant="outlined"
         className="searchInput"
         value={filterText}
-        onChange={setFilterText}
+        onChange={(e) => {
+          setFilterText(e.target.value);
+          filterCardsByText(e.target.value);
+        }}
       />
     </Box>
   );

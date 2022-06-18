@@ -35,13 +35,18 @@
   z-index: 1;
 }
 
+.costValue.selected {
+  top: -50px;
+  left: 32px;
+}
+
 .costValue.seven {
   top: -43px;
   left: 20px;
   font-size: 40px;
 }
 
-.searchInput{
-    margin-top: 25px !important;
-    margin-left: 60px !important;
+.searchInput {
+  margin-top: 25px !important;
+  margin-left: 60px !important;
 }
