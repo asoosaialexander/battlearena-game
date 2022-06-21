@@ -97,77 +97,36 @@ export default function HeroSelectionModal({
 }) {
   const [selectedHero, setSelectedHero] = useState("");
   const getHeroImages = () => {
+    const heroProfile = (profilePic, powerPic) => {
+      return (
+        <>
+            <img src={profilePic} alt={selectedHero} />
+            <img src={powerPic} alt={`${selectedHero} power`} />
+        </>
+      );
+    };
+
     switch (selectedHero) {
       case Deck.DemonHunter:
-        return (
-          <>
-            <img src={DemonHunterHero} alt={selectedHero} />
-            <img src={DemonHunterPower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(DemonHunterHero, DemonHunterPower);
       case Deck.Druid:
-        return (
-          <>
-            <img src={DruidHero} alt={selectedHero} />
-            <img src={DruidPower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(DruidHero, DruidPower);
       case Deck.Hunter:
-        return (
-          <>
-            <img src={HunterHero} alt={selectedHero} />
-            <img src={HunterPower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(HunterHero, HunterPower);
       case Deck.Mage:
-        return (
-          <>
-            <img src={MageHero} alt={selectedHero} />
-            <img src={MagePower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(MageHero, MagePower);
       case Deck.Paladin:
-        return (
-          <>
-            <img src={PaladinHero} alt={selectedHero} />
-            <img src={PaladinPower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(PaladinHero, PaladinPower);
       case Deck.Priest:
-        return (
-          <>
-            <img src={PriestHero} alt={selectedHero} />
-            <img src={PriestPower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(PriestHero, PriestPower);
       case Deck.Warrior:
-        return (
-          <>
-            <img src={WarriorHero} alt={selectedHero} />
-            <img src={WarriorPower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(WarriorHero, WarriorPower);
       case Deck.Warlock:
-        return (
-          <>
-            <img src={WarlockHero} alt={selectedHero} />
-            <img src={WarlockPower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(WarlockHero, WarlockPower);
       case Deck.Rogue:
-        return (
-          <>
-            <img src={RogueHero} alt={selectedHero} />
-            <img src={RoguePower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(RogueHero, RoguePower);
       case Deck.Shaman:
-        return (
-          <>
-            <img src={ShamanHero} alt={selectedHero} />
-            <img src={ShamanPower} alt={`${selectedHero} power`} />
-          </>
-        );
+        return heroProfile(ShamanHero, ShamanPower);
       default:
         return null;
     }

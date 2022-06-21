@@ -10,6 +10,7 @@ import DeckBuilderLayout from "./components/deckBuilder/DeckBuilderLayout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import HeroSelectionlayout from "./components/deckBuilder/HeroSelectionModal";
+import DeckSelection from "./components/game/DeckSelection";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route path="/play" element={<ArenaLayout />} />
+          <Route path="/deckSelection" element={<DeckSelection/>} />
           <Route path="/collection" element={<DeckBuilderLayout />} />
           <Route path="/heroSelection" element={<HeroSelectionlayout />} />
           <Route path="/" element={<Home />} />

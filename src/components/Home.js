@@ -28,7 +28,7 @@ export default function Home() {
           }}
           onClick={(e) => {
             e.preventDefault();
-            navigate("/play");
+            navigate("/deckSelection");
           }}
         >
           Play

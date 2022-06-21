@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import {
@@ -9,6 +9,8 @@ import {
 import HeroSelectionModal from "./HeroSelectionModal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box } from "@mui/system";
+import { useNavigate } from "react-router-dom";
+import ConfirmModal from "../common/ConfirmModal";
 
 export default function PlayerDecks({
   toggleShowPlayerDecks,
@@ -16,7 +18,11 @@ export default function PlayerDecks({
   updateTabContent,
 }) {
   const [isOpen, setOpen] = React.useState(false);
+  const [isConfirmOpen, setConfirmOpen] = React.useState(false);
+  const [selectedDeck, setSelectedDeck] = React.useState({});
   const [deckList, setDeckList] = React.useState([]);
+
+  let navigate = useNavigate();
 
   useEffect(() => {
     getAllPlayerDecks().then((res) => setDeckList(res.data));
@@ -33,6 +39,18 @@ export default function PlayerDecks({
     updateSelectedDeck(newDeck);
     toggleShowPlayerDecks(false);
     updateTabContent(hero);
+  };
+
+  const handleClose = (value) => {
+    setConfirmOpen(false);
+
+    if (value) {
+      deletePlayerDeck(selectedDeck.id);
+      const index = deckList.indexOf(selectedDeck);
+      const updatedDeckList = [...deckList];
+      updatedDeckList.splice(index, 1);
+      setDeckList(updatedDeckList);
+    }
   };
 
   return (
@@ -67,11 +85,8 @@ export default function PlayerDecks({
                       cursor: "pointer",
                     }}
                     onClick={() => {
-                      deletePlayerDeck(deck.id);
-                      const index = deckList.indexOf(deck);
-                      const updatedDeckList = [...deckList];
-                      updatedDeckList.splice(index, 1);
-                      setDeckList(updatedDeckList);
+                      setConfirmOpen(true);
+                      setSelectedDeck(deck);
                     }}
                   />
                 </Box>
@@ -84,11 +99,33 @@ export default function PlayerDecks({
             fullWidth
             sx={{ p: 2, m: 1 }}
             onClick={() => {
-              setOpen(true);
+              if (deckList.length < 10) setOpen(true);
             }}
           >
             New Deck
           </Button>
+          <Grid container justifyContent={"space-between"} sx={{ p: 2 }}>
+            <Grid item>
+              <Typography
+                variant="h6"
+                display="block"
+                sx={{ fontWeight: "bold" }}
+              >
+                {deckList.length}/10 Decks
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/");
+                }}
+              >
+                Back
+              </Button>
+            </Grid>
+          </Grid>
         </CardContent>
       </Card>
       {isOpen &&
@@ -100,6 +137,14 @@ export default function PlayerDecks({
           />,
           document.getElementById("layover-root")
         )}
+      {isConfirmOpen && (
+        <ConfirmModal
+          isOpen={isConfirmOpen}
+          confirmText={"This will delete your deck. Are you sure?"}
+          handleConfirmClick={() => handleClose(true)}
+          handleCancelClick={() => handleClose(false)}
+        />
+      )}
     </>
   );
 }
