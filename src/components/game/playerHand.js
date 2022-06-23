@@ -23,9 +23,9 @@ export default function PlayerHand(props) {
       {playerCards.map((card) => {
         switch (card.type) {
           case CardType.Spell:
-            return <SpellCard key={card.id} card={card} player={player} />;
+            return <SpellCard key={card.uniqueId} card={card} player={player} />;
           default:
-            return <MinionCard key={card.id} card={card} player={player} />;
+            return <MinionCard key={card.uniqueId} card={card} player={player} />;
         }
       })}
     </Grid>

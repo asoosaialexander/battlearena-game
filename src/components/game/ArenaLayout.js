@@ -1,13 +1,15 @@
 import { Box, Card, Divider, Grid } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import PlayerArea from "./PlayerArea";
 import EnemyArea from "./EnemyArea";
 import PlayerHand from "./playerHand";
 import CardDeck from "./cardDeck";
 import PlayerHero from "./playerHero";
 import HearthstoneJSON from "hearthstonejson-client";
+import CardsSelectionModal from "./CardsSelectionModal";
 
 export default function ArenaLayout() {
+  const [open, setOpen] = useState(true);
   var hsjson = new HearthstoneJSON();
 
   // get the latest data
@@ -49,6 +51,7 @@ export default function ArenaLayout() {
           </Grid>
           <Grid item xs>
             <PlayerHand player="self" />
+            <CardsSelectionModal isOpen={open} handleClose={setOpen} />
           </Grid>
           <Grid item xs={1}>
             <CardDeck player="self" />

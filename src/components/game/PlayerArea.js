@@ -17,7 +17,7 @@ export default function PlayerArea() {
       sx={{ minHeight: "220px" }}
     >
       {playerMinions.map((card) => {
-        return <Minion key={card.id} card={card} player="self" />;
+        return <Minion key={card.uniqueId} card={card} player="self" />;
       })}
     </Grid>
   );

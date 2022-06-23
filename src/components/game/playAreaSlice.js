@@ -91,7 +91,7 @@ export const {
   clearDeadMinions,
   attackMinionWithMinion,
   attackMinionWithDamage,
-  attackAllMinionsWithDamage
+  attackAllMinionsWithDamage,
 } = playAreaSlice.actions;
 
 export default playAreaSlice.reducer;
