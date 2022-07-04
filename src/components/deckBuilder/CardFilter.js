@@ -1,6 +1,6 @@
 import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useReducer } from "react";
 import GemImage from "./../../images/gem.png";
 import CoreNeutral from "../../data/core-neutral.json";
 import CoreDemonHunter from "../../data/core-demonhunter.json";
@@ -15,9 +15,21 @@ import CoreWarlock from "../../data/core-warlock.json";
 import CoreWarrior from "../../data/core-warrior.json";
 import { Deck } from "../common/constants";
 
+const filterReducer = (state, action) => {
+  if (action.type === "TEXT_FILTER_INPUT") {
+    return { ...state, text: action.value };
+  }
+  if (action.type === "COST_FILTER_INPUT") {
+    return { ...state, cost: action.value };
+  }
+  return { text: "", cost: null };
+};
+
 export default function CardFilter({ selectedValue, actions }) {
-  const [filterText, setFilterText] = React.useState("");
-  const [filterCost, setFilterCost] = React.useState();
+  const [filterState, dispatchFilter] = useReducer(filterReducer, {
+    text: "",
+    cost: null,
+  });
   const filterCards = (filterAction) => {
     actions.setDemonHunterCards(
       CoreDemonHunter.filter((card) => filterAction(card))
@@ -86,6 +98,7 @@ export default function CardFilter({ selectedValue, actions }) {
     };
     filterCards(fn);
   };
+
   const filterCardsByText = (text) => {
     const fn = (card) =>
       card.name.toLowerCase().includes(text.toLowerCase()) ||
@@ -93,9 +106,20 @@ export default function CardFilter({ selectedValue, actions }) {
       (card.text && card.text.toLowerCase().includes(text.toLowerCase()));
     filterCards(fn);
   };
+
+  const handleCostButtonClick = (cost) => {
+    if (filterState.cost === cost) {
+      dispatchFilter({ type: "COST_FILTER_INPUT", value: "" });
+      filterCardsByCost("");
+    } else {
+      dispatchFilter({ type: "COST_FILTER_INPUT", value: cost });
+      filterCardsByCost(cost);
+    }
+  };
+
   return (
     <Box sx={{ textAlign: "center" }}>
-      {[0, 1, 2, 3, 4, 5, 6].map((cost, index) => (
+      {[0, 1, 2, 3, 4, 5, 6, "7+"].map((cost, index) => (
         <Box
           key={index}
           sx={{
@@ -104,61 +128,31 @@ export default function CardFilter({ selectedValue, actions }) {
             cursor: "pointer",
           }}
           onClick={() => {
-            if (filterCost === cost) {
-              setFilterCost("");
-              filterCardsByCost("");
-            } else {
-              setFilterCost(cost);
-              filterCardsByCost(cost);
-            }
+            handleCostButtonClick(cost);
           }}
         >
           <img
-            className="costImg"
+            className={`costImg ${filterState.cost === cost ? "selected" : ""}`}
             src={GemImage}
             alt={`cost${cost}`}
-            style={{
-              border: filterCost === cost ? "4px goldenrod solid" : "",
-            }}
           />
           <Typography
             variant="body"
-            className={`costValue ${filterCost === cost ? "selected" : ""}`}
+            className={`costText ${
+              filterState.cost === cost ? "selected" : ""
+            }`}
           >
             {cost}
           </Typography>
         </Box>
       ))}
-      <Box
-        sx={{
-          position: "relative",
-          display: "inline",
-          cursor: "pointer",
-        }}
-        onClick={() => {
-          setFilterCost("7+");
-          filterCardsByCost("7+");
-        }}
-      >
-        <img
-          className="costImg"
-          src={GemImage}
-          alt={`cost7+`}
-          style={{
-            border: filterCost === "7+" ? "4px goldenrod solid" : "",
-          }}
-        />
-        <Typography variant="body" className="costValue seven">
-          {"7+"}
-        </Typography>
-      </Box>
       <TextField
         label="Search"
         variant="outlined"
         className="searchInput"
-        value={filterText}
+        value={filterState.text}
         onChange={(e) => {
-          setFilterText(e.target.value);
+          dispatchFilter({ type: "TEXT_FILTER_INPUT", value: e.target.value });
           filterCardsByText(e.target.value);
         }}
       />

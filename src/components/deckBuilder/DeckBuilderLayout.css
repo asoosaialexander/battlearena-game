@@ -24,26 +24,24 @@
   margin-left: 10px;
 }
 
-.costValue {
+.costImg.selected {
+  border: 4px goldenrod solid;
+}
+
+.costText {
   position: absolute;
   font-weight: bold;
-  font-size: 44px;
-  top: -45px;
-  left: 25px;
   color: whitesmoke;
   -webkit-text-stroke: 1px black;
   z-index: 1;
+  font-size: 44px;
+  top: -45px;
+  left: 25px;
 }
 
-.costValue.selected {
+.costText.selected {
   top: -50px;
   left: 32px;
-}
-
-.costValue.seven {
-  top: -43px;
-  left: 20px;
-  font-size: 40px;
 }
 
 .searchInput {
