@@ -83,6 +83,7 @@ export default function CustomDeck({ deck, updateDeck, handleBackClick }) {
           size="large"
           variant="outlined"
           color="primary"
+          disabled={deck.cards.length > 0 ? false : true}
           onClick={() => {
             updatePlayerDeck({ ...deck, name: deckName });
             handleBackClick();

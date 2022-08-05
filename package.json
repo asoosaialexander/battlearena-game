@@ -12,6 +12,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.27.2",
+    "boardgame.io": "^0.49.12",
     "hearthstonejson-client": "^1.13.0",
     "import": "0.0.6",
     "prop-types": "^15.8.1",
@@ -23,7 +24,7 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "start": "set PORT=3001 && react-scripts start",
+    "start": "set PORT=3000 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

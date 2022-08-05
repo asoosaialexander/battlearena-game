@@ -2,7 +2,6 @@ import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import {
-  addPlayerDeck,
   getAllPlayerDecks,
   deletePlayerDeck,
 } from "../../services/playerDeck";
@@ -25,17 +24,21 @@ export default function PlayerDecks({
   let navigate = useNavigate();
 
   useEffect(() => {
-    getAllPlayerDecks().then((res) => setDeckList(res.data));
+    getAllPlayerDecks().then((res) => {
+      const decks = [];
+      for (let index in res.data) {
+        decks.push({ id: index, ...res.data[index] });
+      }
+      setDeckList(decks);
+    });
   }, [toggleShowPlayerDecks]);
 
   const addNewDeck = (hero) => {
     const newDeck = {
-      id: Math.random().toString(),
       name: `CUSTOM ${hero}`,
       hero,
       cards: [],
     };
-    addPlayerDeck(newDeck);
     updateSelectedDeck(newDeck);
     toggleShowPlayerDecks(false);
     updateTabContent(hero);

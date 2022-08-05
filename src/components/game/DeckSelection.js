@@ -35,7 +35,13 @@ export default function DeckSelection() {
   let dispatch = useDispatch();
 
   useEffect(() => {
-    getAllPlayerDecks().then((res) => setDeckList(res.data));
+    getAllPlayerDecks().then((res) => {
+      const decks = [];
+      for (let index in res.data) {
+        decks.push({ id: index, ...res.data[index] });
+      }
+      setDeckList(decks);
+    });
   }, []);
 
   const getHeroImages = () => {

@@ -59,7 +59,7 @@ export const Spell = {
 };
 
 export const APIRoot = "https://art.hearthstonejson.com/v1";
-export const ServerRoot = " http://localhost:3000/";
+export const ServerRoot = "https://battlearena-api-default-rtdb.firebaseio.com/";
 
 export const CoinFace = {
   Heads: "Heads",
