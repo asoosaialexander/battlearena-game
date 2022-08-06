@@ -1,16 +1,11 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import { useSelector } from "react-redux";
 import { CardType } from "./../common/constants";
 import MinionCard from "./MinionCard";
 import SpellCard from "./SpellCard";
-import { selectSelfHand, selectEnemyHand } from "./playerSlice";
 
-export default function PlayerHand(props) {
-  const { player } = props;
-  const playerCards = useSelector(
-    player === "self" ? selectSelfHand : selectEnemyHand
-  );
+export default function PlayerHand({ player, game, moves }) {
+  const playerCards = game.players[player].cards;
 
   return (
     <Grid
@@ -23,9 +18,17 @@ export default function PlayerHand(props) {
       {playerCards.map((card) => {
         switch (card.type) {
           case CardType.Spell:
-            return <SpellCard key={card.uniqueId} card={card} player={player} />;
+            return <SpellCard key={card.uniqueId} card={card} moves={moves} />;
           default:
-            return <MinionCard key={card.uniqueId} card={card} player={player} />;
+            return (
+              <MinionCard
+                key={card.uniqueId}
+                card={card}
+                player={player}
+                game={game}
+                moves={moves}
+              />
+            );
         }
       })}
     </Grid>

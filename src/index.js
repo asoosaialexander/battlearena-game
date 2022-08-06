@@ -5,19 +5,19 @@ import "./index.css";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
-import ArenaLayout from "./components/game/ArenaLayout";
 import DeckBuilderLayout from "./components/deckBuilder/DeckBuilderLayout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import HeroSelectionlayout from "./components/deckBuilder/HeroSelectionModal";
 import DeckSelection from "./components/game/DeckSelection";
+import GameApp from "./components/game/GameApp";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/play" element={<ArenaLayout />} />
+          <Route path="/play" element={<GameApp />} />
           <Route path="/deckSelection" element={<DeckSelection/>} />
           <Route path="/collection" element={<DeckBuilderLayout />} />
           <Route path="/heroSelection" element={<HeroSelectionlayout />} />

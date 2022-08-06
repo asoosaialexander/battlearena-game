@@ -1,33 +1,27 @@
 import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
 import "./Card.css";
 import { Spell } from "../common/constants";
-import { drawCard, playCard } from "./playerSlice";
-import { clearDeadMinions, attackAllMinionsWithDamage } from "./playAreaSlice";
 
-export default function SpellCard(props) {
-  const { id, name, cost, text } = props.card;
-  const player = props.player;
-  const dispatch = useDispatch();
+export default function SpellCard({ card, player, game, moves }) {
+  const { id, name, cost, text } = card;
 
   const playSpell = (spellName) => {
     switch (spellName) {
       case Spell.ArcaneIntellect:
         for (var i = 0; i < 2; i++) {
-          dispatch(drawCard(player));
+          moves.drawCard();
         }
         break;
       case Spell.Flamestrike:
-        dispatch(attackAllMinionsWithDamage({ damage: 5, player }));
-        dispatch(clearDeadMinions());
+        moves.attackAllMinionsWithDamage(5);
         break;
 
       default:
         console.log("SPELL NOT FOUND");
     }
 
-    dispatch(playCard({ card: props.card, player }));
+    moves.playCard(card);
   };
 
   return (

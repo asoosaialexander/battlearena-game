@@ -26,8 +26,7 @@ export default function Home() {
             fontSize: 36,
             fontFamily: "Belwe Bd BT",
           }}
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={() => {
             navigate("/deckSelection");
           }}
         >
@@ -40,8 +39,7 @@ export default function Home() {
             fontSize: 36,
             fontFamily: "Belwe Bd BT",
           }}
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={() => {
             navigate("/collection");
           }}
         >

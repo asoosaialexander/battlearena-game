@@ -3,15 +3,17 @@ import React from "react";
 import PlayerCard from "../deckBuilder/PlayerCard";
 import Styles from "./CardsSelectionModal.module.css";
 import CardRemoveImg from "./../../images/remove_card.png";
-import { useDispatch, useSelector } from "react-redux";
-import { drawInitialCards, markCard, selfSelectedCards } from "./playerSlice";
 
-export default function CardsSelectionModal({ isOpen, handleClose }) {
-  const cards = useSelector(selfSelectedCards);
-  const dispatch = useDispatch();
+export default function CardsSelectionModal({
+  game,
+  context,
+  moves,
+}) {
+  const cards = game.players[context.currentPlayer].selection;
+  console.log(cards);
   return (
     <>
-      <Modal open={isOpen}>
+      <Modal open={game.cardSelectionIsActive}>
         <Box className={Styles["modal-content"]}>
           <Grid
             container
@@ -24,7 +26,7 @@ export default function CardsSelectionModal({ isOpen, handleClose }) {
                 <Box
                   key={card.uniqueId}
                   sx={{ position: "relative", cursor: "pointer" }}
-                  onClick={() => dispatch(markCard({ player: "self", card }))}
+                  onClick={() => moves.markCard(card)}
                 >
                   <PlayerCard card={card} handleClick={() => {}} />
                   {card.isMarked && (
@@ -41,10 +43,9 @@ export default function CardsSelectionModal({ isOpen, handleClose }) {
             <Button
               variant="outlined"
               sx={{ fontSize: 18 }}
-              onClick={(e) => {
-                e.preventDefault();
-                dispatch(drawInitialCards("self"));
-                handleClose(false);
+              onClick={() => {
+                moves.drawInitialCards();
+                moves.toggleCardSelection(false);
               }}
             >
               Confirm

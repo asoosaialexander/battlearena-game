@@ -1,16 +1,9 @@
 import { Paper, Typography } from "@mui/material";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import CardBackImg from "./../../images/cardBack.png";
-import { selfDeckCardCount, enemyDeckCardCount } from "./playerSlice";
-import { drawCard } from "./playerSlice";
 
-export default function CardDeck(props) {
-  const { player } = props;
-  const dispatch = useDispatch();
-  const cardCount = useSelector(
-    player === "self" ? selfDeckCardCount : enemyDeckCardCount
-  );
+export default function CardDeck({ player, game, moves }) {
+  const cardCount = game.players[player].deck.length;
   return (
     <Paper
       elevation={0}
@@ -24,7 +17,7 @@ export default function CardDeck(props) {
         alignItems: "center",
       }}
       onClick={() => {
-        if (cardCount > 0) dispatch(drawCard(player));
+        if (cardCount > 0) moves.drawCard();
       }}
     >
       {cardCount < 1 && (

@@ -1,14 +1,10 @@
 import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
 import "./Card.css";
-import { playCard } from "./playerSlice";
-import { playMinion } from "./playAreaSlice";
-import { APIRoot, CardType } from "./../common/constants";
+import { APIRoot } from "./../common/constants";
 
-export default function MinionCard(props) {
-  const { id, name, cost, attack, health, type, text } = props.card;
-  const dispatch = useDispatch();
+export default function MinionCard({ card, moves }) {
+  const { id, name, cost, attack, health, text } = card;
 
   return (
     <Paper
@@ -20,12 +16,7 @@ export default function MinionCard(props) {
         height: "336px",
         zoom: "80%",
       }}
-      onClick={() => {
-        dispatch(playCard({ card: props.card, player: props.player }));
-        if (type === CardType.Minion) {
-          dispatch(playMinion({ card: props.card, player: props.player }));
-        }
-      }}
+      onClick={moves.play}
     >
       <img
         className="minionImage"

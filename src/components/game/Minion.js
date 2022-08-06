@@ -18,32 +18,20 @@ import PoisonousImg from "./../../images/icon_poisonous.png";
 import DeathratlleImg from "./../../images/icon_deathrattle.png";
 import { Box } from "@mui/system";
 import { Mechanics, Rarity } from "./../common/constants";
-import {
-  selectSelfMinions,
-  selectEnemyMinions,
-  attackMinionWithMinion,
-  clearDeadMinions,
-} from "./playAreaSlice";
-import { useDispatch, useSelector } from "react-redux";
 
-export default function Minion(props) {
-  const { id, attack, health, rarity, name, mechanics, text } = props.card;
-  const player = props.player;
+export default function Minion({ card, player, game, moves }) {
+  const { id, attack, health, rarity, name, mechanics, text } = card;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [target, setTarget] = React.useState("");
   const [helpText, setHelpText] = React.useState(false);
 
-  const selfMinions = useSelector(selectSelfMinions);
-  const enemyMinions = useSelector(selectEnemyMinions);
-  const dispatch = useDispatch();
+  const opponentMinions = game.players[player].minions;
 
   const handleChange = (event) => {
     setTarget(event.target.value);
   };
-
-  const opponentMinions = player === "self" ? enemyMinions : selfMinions;
 
   const style = {
     position: "absolute",
@@ -104,17 +92,6 @@ export default function Minion(props) {
         {mechanics && mechanics.includes(Mechanics.Deathrattle) && (
           <img className="deathrattle" src={DeathratlleImg} alt="posion" />
         )}
-        {/* <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-        <clipPath id="clipCircle">
-          <circle r="80" cx="50" cy="50" />
-        </clipPath>
-        <image
-          width="400"
-          height="400"
-          clip-path="url(#clipCircle)"
-          href={`https://art.hearthstonejson.com/v1/256x/${id}.jpg`}
-        />
-      </svg> */}
       </Paper>
       {text && helpText && (
         <Card
@@ -133,10 +110,7 @@ export default function Minion(props) {
           <div dangerouslySetInnerHTML={{ __html: `<p>${text}</p>` }} />
         </Card>
       )}
-      <Modal
-        open={open}
-        onClose={handleClose}
-      >
+      <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <FormControl fullWidth>
             <InputLabel>Target</InputLabel>
@@ -161,13 +135,7 @@ export default function Minion(props) {
               <Button
                 variant="outlined"
                 onClick={() => {
-                  dispatch(
-                    attackMinionWithMinion({
-                      selfMinionId: player === "self" ? id : target,
-                      enemyMinionId: player === "enemy" ? id : target,
-                    })
-                  );
-                  dispatch(clearDeadMinions());
+                  moves.attackMinionWithMinion(id, target);
                   handleClose();
                 }}
               >

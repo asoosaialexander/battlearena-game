@@ -5,9 +5,9 @@ import ArmorImg from "./../../images/armor.webp";
 import HeroPower from "./../../images/heroPower.webp";
 import "./Hero.css";
 
-export default function PlayerHero() {
-  const armor = 30;
-  const health = 30;
+export default function PlayerHero({ game, player }) {
+  const armor = game.players[player].hero.armor;
+  const health = game.players[player].hero.health;
   return (
     <Grid
       container
