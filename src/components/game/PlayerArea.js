@@ -2,8 +2,8 @@ import React from "react";
 import Minion from "./Minion";
 import { Grid } from "@mui/material";
 
-export default function PlayerArea({ player, game, context, moves }) {
-  const playerMinions = game.players[context.currentPlayer].minions;
+export default function PlayerArea({ player, context, game, moves }) {
+  const playerMinions = game.players[player].minions;
 
   return (
     <Grid
@@ -17,10 +17,10 @@ export default function PlayerArea({ player, game, context, moves }) {
       {playerMinions.map((card) => {
         return (
           <Minion
-            game ={game}
+            game={game}
             key={card.uniqueId}
+            context={context}
             card={card}
-            player={player}
             moves={moves}
           />
         );

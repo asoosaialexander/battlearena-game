@@ -19,7 +19,7 @@ export default function PlayerHand({ player, game, moves }) {
         switch (card.type) {
           case CardType.Spell:
             return <SpellCard key={card.uniqueId} card={card} moves={moves} />;
-          default:
+          case CardType.Minion:
             return (
               <MinionCard
                 key={card.uniqueId}
@@ -29,6 +29,8 @@ export default function PlayerHand({ player, game, moves }) {
                 moves={moves}
               />
             );
+          default:
+            return null;
         }
       })}
     </Grid>

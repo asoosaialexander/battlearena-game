@@ -1,5 +1,6 @@
 import { CardType, Mechanics } from "../common/constants";
 import { Coin } from "../common/generatedCards";
+import { v4 as uuidv4 } from "uuid";
 
 export const drawCard = (G, ctx) => {
   const player = G.players[ctx.currentPlayer];
@@ -18,43 +19,50 @@ export const drawCard = (G, ctx) => {
 
 export const playCard = (G, ctx, card) => {
   const player = G.players[ctx.currentPlayer];
+  if (card.cost > player.mana.available) return console.log("Can't play card");
   if (player.minions.length < 7) {
-    if (card.type === CardType.Minion) player.minions.push(card);
     const cardIndex = player.cards.findIndex(
       (x) => x.uniqueId === card.uniqueId
     );
-    player.cards.splice(cardIndex, 1);
+    if (cardIndex > -1) {
+      if (card.type === CardType.Minion) player.minions.push(card);
+      player.cards.splice(cardIndex, 1);
+      player.mana.available -= card.cost;
+    }
   }
 };
 export const useHeroPower = (G, ctx) => {};
 export const attackWithMinion = (G, ctx) => {};
 export const attackWithWeapon = (G, ctx) => {};
 export const toggleCardSelection = (G, ctx, toggle) => {
-  G.cardSelectionIsActive = toggle;
+  G.players[ctx.currentPlayer].selection.isOpen = toggle;
 };
 
 export const markCard = (G, ctx, card) => {
   const player = G.players[ctx.currentPlayer];
-  const index = player.selection.findIndex((c) => c.uniqueId === card.uniqueId);
+  const index = player.selection.cards.findIndex(
+    (c) => c.uniqueId === card.uniqueId
+  );
   if (index > -1)
-    player.selection[index].isMarked = !player.selection[index].isMarked;
+    player.selection.cards[index].isMarked =
+      !player.selection.cards[index].isMarked;
 };
 
-export const drawInitialCards = (G, ctx) => {
-  const player = G.players[ctx.currentPlayer];
-  const markedCards = player.selection.filter((c) => c.isMarked);
+export const drawInitialCards = (G, ctx, playerId) => {
+  const player = G.players[playerId];
+  const markedCards = player.selection.cards.filter((c) => c.isMarked);
 
   // Add removed cards to the deck
   for (const card of markedCards) {
     player.deck.push(card);
   }
   // Add selected cards to the hand
-  const selectedCards = player.selection.filter((c) => !c.isMarked);
+  const selectedCards = player.selection.cards.filter((c) => !c.isMarked);
   for (const card of selectedCards) {
     player.cards.push(card);
   }
   // Get Remaining card count to be added to player
-  let i = (ctx.currentPlayer === G.firstPlayer ? 3 : 4) - player.cards.length;
+  let i = (playerId === G.firstPlayer ? 3 : 4) - player.cards.length;
 
   while (i > 0) {
     const index = Math.floor(Math.random() * player.deck.length);
@@ -65,9 +73,10 @@ export const drawInitialCards = (G, ctx) => {
   }
 
   // Give a coin to Second Player
-  if (ctx.currentPlayer !== G.firstPlayer) player.cards.push(Coin);
+  if (playerId !== G.firstPlayer)
+    player.cards.push({ ...Coin, uniqueId: uuidv4(), isMarked: false });
 
-  player.selection = [];
+  player.selection.cards = [];
 };
 
 export const attackMinionWithMinion = (
@@ -79,20 +88,28 @@ export const attackMinionWithMinion = (
   const player = G.players[ctx.currentPlayer];
   const opponent = G.players[ctx.currentPlayer === "0" ? "1" : "0"];
 
-  const sI = player.minions.findIndex((m) => m.id === attackMinionId);
-  const eI = opponent.minions.findIndex((m) => m.id === defendMinionId);
+  const sI = player.minions.findIndex((m) => m.uniqueId === attackMinionId);
+  const eI = opponent.minions.findIndex((m) => m.uniqueId === defendMinionId);
 
-  opponent.minions[eI].health -= player.minions[sI].attack;
-  player.minions[sI].health -= opponent.minions[eI].attack;
+  opponent.minions[eI].health =
+    player.minions[sI].attack - opponent.minions[eI].health;
+  player.minions[sI].health =
+    opponent.minions[eI].attack - player.minions[sI].health;
 
   player.minions = player.minions.filter((m) => m.health > 0);
   opponent.minions = opponent.minions.filter((m) => m.health > 0);
 
   //Logic for Poisonous Minion
-  if (player.minions[sI].mechanics?.includes(Mechanics.Poisonous))
+  if (
+    player.minions[sI].mechanics.length > 0 &&
+    player.minions[sI].mechanics.includes(Mechanics.Poisonous)
+  )
     opponent.minions.splice(eI, 1);
 
-  if (opponent.minions[eI].mechanics?.includes(Mechanics.Poisonous))
+  if (
+    opponent.minions[eI].mechanics.length > 0 &&
+    opponent.minions[eI].mechanics.includes(Mechanics.Poisonous)
+  )
     player.minions.splice(sI, 1);
 };
 
@@ -111,4 +128,17 @@ export const attackAllMinionsWithDamage = (G, ctx, damage) => {
     opponent.minions[i].health -= damage;
   }
   opponent.minions = opponent.minions.filter((m) => m.health > 0);
+};
+
+export const attackHeroWithMinion = (G, ctx, damage) => {
+  const opponent = G.players[ctx.currentPlayer === "0" ? "1" : "0"];
+
+  while (opponent.hero.armor > 0 && damage > 0) {
+    damage--;
+    opponent.hero.armor--;
+  }
+
+  if (damage > 0) {
+    opponent.hero.health -= damage;
+  }
 };

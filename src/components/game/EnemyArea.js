@@ -1,11 +1,9 @@
 import { Grid } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
 import Minion from "./Minion";
-import { selectEnemyMinions } from "./playAreaSlice";
 
-export default function EnemyArea() {
-  const enemyMinions = useSelector(selectEnemyMinions);
+export default function EnemyArea({ player, context, game, moves }) {
+  const enemyMinions = game.players[player].minions;
 
   return (
     <Grid
@@ -16,7 +14,15 @@ export default function EnemyArea() {
       sx={{ minHeight: "220px" }}
     >
       {enemyMinions.map((card) => {
-        return <Minion key={card.id} card={card} player="enemy" />;
+        return (
+          <Minion
+            game={game}
+            key={card.uniqueId}
+            card={card}
+            context={context}
+            moves={moves}
+          />
+        );
       })}
     </Grid>
   );

@@ -13,41 +13,40 @@ import {
   attackMinionWithDamage,
   attackMinionWithMinion,
   drawInitialCards,
+  attackHeroWithMinion,
 } from "./MoveList";
+import { setMana, endTurn } from "../moves/gameMoves";
 import { CoinFace } from "../common/constants";
+import { TurnOrder } from "boardgame.io/core";
+import { playCoin } from "../moves/commonSpells";
 
 export const Hearthstone = {
   setup: () => {
-    let players = [];
-    players.push({
-      energy: 0,
-      hero: {
-        attack: 0,
-        armor: 0,
-        health: 30,
-        fatigue: 1,
-        isAlive: true,
-      },
-      weapon: {},
-      minions: [],
-      cards: [],
-      deck: [],
-      selection: [],
-    });
-    players.push({
-      energy: 0,
-      hero: {
-        attack: 0,
-        armor: 0,
-        health: 30,
-        fatigue: 1,
-        isAlive: true,
-      },
-      weapon: {},
-      minions: [],
-      cards: [],
-      deck: [],
-      selection: [],
+    let players = {};
+    ["0", "1"].forEach((playerId) => {
+      players[playerId] = {
+        hero: {
+          attack: 0,
+          armor: 0,
+          health: 30,
+          fatigue: 1,
+          isAlive: true,
+        },
+        mana: {
+          max: 10,
+          total: 0,
+          available: 0,
+          overload: 0,
+        },
+        weapon: {},
+        minions: [],
+        cards: [],
+        deck: [],
+        selection: {
+          isOpen: false,
+          cards: [],
+        },
+      };
     });
 
     const mageDeck = MAGE_DECK;
@@ -55,12 +54,12 @@ export const Hearthstone = {
 
     shuffle(mageDeck);
     for (const card of mageDeck) {
-      players[0].deck.push({ ...card, uniqueId: uuidv4(), isMarked: false });
+      players["0"].deck.push({ ...card, uniqueId: uuidv4(), isMarked: false });
     }
 
     shuffle(warriorDeck);
     for (const card of warriorDeck) {
-      players[1].deck.push({ ...card, uniqueId: uuidv4(), isMarked: false });
+      players["1"].deck.push({ ...card, uniqueId: uuidv4(), isMarked: false });
     }
 
     //Select First Player
@@ -70,23 +69,23 @@ export const Hearthstone = {
     let j = firstPlayer === "1" ? 3 : 4;
 
     while (i > 0) {
-      const index = Math.floor(Math.random() * players[0].deck.length);
-      players[0].selection.push(players[0].deck[index]);
-      players[0].deck.splice(index, 1);
+      const index = Math.floor(Math.random() * players["0"].deck.length);
+      players["0"].selection.cards.push(players["0"].deck[index]);
+      players["0"].deck.splice(index, 1);
       i--;
     }
 
     while (j > 0) {
-      const index = Math.floor(Math.random() * players[1].deck.length);
-      players[1].selection.push(players[1].deck[index]);
-      players[1].deck.splice(index, 1);
+      const index = Math.floor(Math.random() * players["1"].deck.length);
+      players["1"].selection.cards.push(players["1"].deck[index]);
+      players["1"].deck.splice(index, 1);
       j--;
     }
 
     return {
       players,
+      turnOrder: firstPlayer === "0" ? ["0", "1"] : ["1", "0"],
       firstPlayer,
-      cardSelectionIsActive: true,
     };
   },
 
@@ -103,7 +102,43 @@ export const Hearthstone = {
     markCard,
     drawInitialCards,
     attackMinionWithMinion,
+    attackHeroWithMinion,
     attackMinionWithDamage,
     attackAllMinionsWithDamage,
+    setMana,
+    endTurn,
+    playCoin
+  },
+
+  endIf: (G, ctx) => {
+    if (G.players["0"].hero.health <= 0) {
+      return { winner: ["1"] };
+    }
+
+    if (G.players["1"].hero.health <= 0) {
+      return { winner: ["0"] };
+    }
+  },
+
+  phases: {
+    draw: {
+      start: true,
+      onBegin: (G, ctx) => {
+        ["0", "1"].forEach((player) => {
+          drawInitialCards(G, ctx, player);
+        });
+      },
+      next: "play",
+    },
+    play: {
+      moves: {},
+    },
+  },
+
+  turn: {
+    order: TurnOrder.CUSTOM_FROM("turnOrder"),
+    onBegin: (G, ctx) => {
+      setMana(G, ctx);
+    },
   },
 };

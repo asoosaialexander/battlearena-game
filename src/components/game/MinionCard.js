@@ -16,7 +16,7 @@ export default function MinionCard({ card, moves }) {
         height: "336px",
         zoom: "80%",
       }}
-      onClick={moves.play}
+      onClick={() => moves.playCard(card)}
     >
       <img
         className="minionImage"

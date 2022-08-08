@@ -19,15 +19,16 @@ import DeathratlleImg from "./../../images/icon_deathrattle.png";
 import { Box } from "@mui/system";
 import { Mechanics, Rarity } from "./../common/constants";
 
-export default function Minion({ card, player, game, moves }) {
-  const { id, attack, health, rarity, name, mechanics, text } = card;
+export default function Minion({ card, context, game, moves }) {
+  const { uniqueId, attack, health, rarity, name, mechanics, text } = card;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [target, setTarget] = React.useState("");
   const [helpText, setHelpText] = React.useState(false);
 
-  const opponentMinions = game.players[player].minions;
+  const opponentMinions =
+    game.players[context.currentPlayer === "0" ? "1" : "0"].minions;
 
   const handleChange = (event) => {
     setTarget(event.target.value);
@@ -135,7 +136,7 @@ export default function Minion({ card, player, game, moves }) {
               <Button
                 variant="outlined"
                 onClick={() => {
-                  moves.attackMinionWithMinion(id, target);
+                  moves.attackMinionWithMinion(uniqueId, target);
                   handleClose();
                 }}
               >

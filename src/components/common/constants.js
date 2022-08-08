@@ -56,6 +56,7 @@ export const Mechanics = {
 export const Spell = {
   ArcaneIntellect: "Arcane Intellect",
   Flamestrike: "Flamestrike",
+  Coin:"Coin"
 };
 
 export const APIRoot = "https://art.hearthstonejson.com/v1";

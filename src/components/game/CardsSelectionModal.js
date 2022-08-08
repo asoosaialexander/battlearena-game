@@ -4,16 +4,11 @@ import PlayerCard from "../deckBuilder/PlayerCard";
 import Styles from "./CardsSelectionModal.module.css";
 import CardRemoveImg from "./../../images/remove_card.png";
 
-export default function CardsSelectionModal({
-  game,
-  context,
-  moves,
-}) {
-  const cards = game.players[context.currentPlayer].selection;
-  console.log(cards);
+export default function CardsSelectionModal({ game, context, moves }) {
+  const player = game.players[context.currentPlayer];
   return (
     <>
-      <Modal open={game.cardSelectionIsActive}>
+      <Modal open={player.selection.isOpen}>
         <Box className={Styles["modal-content"]}>
           <Grid
             container
@@ -21,8 +16,8 @@ export default function CardsSelectionModal({
             justifyContent="flex-start"
             sx={{ minHeight: "260px" }}
           >
-            {cards &&
-              cards.map((card) => (
+            {player.selection.cards.length > 0 &&
+              player.selection.cards.map((card) => (
                 <Box
                   key={card.uniqueId}
                   sx={{ position: "relative", cursor: "pointer" }}

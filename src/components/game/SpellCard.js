@@ -16,6 +16,9 @@ export default function SpellCard({ card, player, game, moves }) {
       case Spell.Flamestrike:
         moves.attackAllMinionsWithDamage(5);
         break;
+      case Spell.Coin:
+        moves.playCoin();
+        break;
 
       default:
         console.log("SPELL NOT FOUND");
