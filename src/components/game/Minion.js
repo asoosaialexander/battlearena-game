@@ -124,7 +124,7 @@ export default function Minion({ card, context, game, moves }) {
             >
               {opponentMinions.map((m) => {
                 return (
-                  <MenuItem key={m.id} value={m.id}>
+                  <MenuItem key={m.uniqueId} value={m.uniqueId}>
                     {m.name}
                   </MenuItem>
                 );

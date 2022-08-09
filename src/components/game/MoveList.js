@@ -17,7 +17,7 @@ export const drawCard = (G, ctx) => {
   }
 };
 
-export const playCard = (G, ctx, card) => {
+export const playCard = (G, ctx, card, position) => {
   const player = G.players[ctx.currentPlayer];
   if (card.cost > player.mana.available) return console.log("Can't play card");
   if (player.minions.length < 7) {
@@ -25,7 +25,10 @@ export const playCard = (G, ctx, card) => {
       (x) => x.uniqueId === card.uniqueId
     );
     if (cardIndex > -1) {
-      if (card.type === CardType.Minion) player.minions.push(card);
+      if (card.type === CardType.Minion) {
+        if (player.minions.length === 0) player.minions.push(card);
+        else player.minions.splice(position, 0, card);
+      }
       player.cards.splice(cardIndex, 1);
       player.mana.available -= card.cost;
     }
@@ -91,23 +94,23 @@ export const attackMinionWithMinion = (
   const sI = player.minions.findIndex((m) => m.uniqueId === attackMinionId);
   const eI = opponent.minions.findIndex((m) => m.uniqueId === defendMinionId);
 
-  opponent.minions[eI].health =
-    player.minions[sI].attack - opponent.minions[eI].health;
-  player.minions[sI].health =
-    opponent.minions[eI].attack - player.minions[sI].health;
+  opponent.minions[eI].health -= player.minions[sI].attack;
+  player.minions[sI].health -= opponent.minions[eI].attack;
 
   player.minions = player.minions.filter((m) => m.health > 0);
   opponent.minions = opponent.minions.filter((m) => m.health > 0);
 
   //Logic for Poisonous Minion
   if (
-    player.minions[sI].mechanics.length > 0 &&
+    player.minions[sI] &&
+    player.minions[sI].mechanics &&
     player.minions[sI].mechanics.includes(Mechanics.Poisonous)
   )
     opponent.minions.splice(eI, 1);
 
   if (
-    opponent.minions[eI].mechanics.length > 0 &&
+    opponent.minions[eI] &&
+    opponent.minions[eI].mechanics &&
     opponent.minions[eI].mechanics.includes(Mechanics.Poisonous)
   )
     player.minions.splice(sI, 1);
