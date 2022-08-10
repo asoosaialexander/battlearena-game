@@ -31,9 +31,6 @@ export default function ArenaLayout({ ctx, G, moves }) {
       <Card sx={{ m: 1, boxShadow: 1 }}>
         <EnemyArea player={enemy} context={ctx} game={G} moves={moves} />
         <Grid container sx={{ alignItems: "center" }}>
-          <Grid item xs>
-            <Divider />
-          </Grid>
           <Grid item xs={1}>
             <Button
               variant="outlined"
@@ -46,6 +43,9 @@ export default function ArenaLayout({ ctx, G, moves }) {
             >
               End Turn
             </Button>
+          </Grid>
+          <Grid item xs>
+            <Divider />
           </Grid>
         </Grid>
         <PlayerArea player={self} context={ctx} game={G} moves={moves} />

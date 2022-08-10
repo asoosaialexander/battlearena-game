@@ -5,6 +5,14 @@ export const setMana = (G, ctx) => {
   mana.overload = 0;
 };
 
+export const readyMinions = (G, ctx) => {
+  const minions = G.players[ctx.currentPlayer].minions;
+  for (let index = 0; index < minions.length; index++) {
+    minions[index].isReady = true;
+    minions[index].activated = false;
+  }
+};
+
 export const endTurn = (G, ctx) => {
   ctx.events.endTurn();
 };

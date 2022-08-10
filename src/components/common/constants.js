@@ -51,6 +51,7 @@ export const Mechanics = {
   Stealth: "STEALTH",
   Deathrattle: "DEATHRATTLE",
   Taunt: "TAUNT",
+  Charge: "CHARGE",
 };
 
 export const Spell = {

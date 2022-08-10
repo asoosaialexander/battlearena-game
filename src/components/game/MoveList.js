@@ -25,6 +25,10 @@ export const playCard = (G, ctx, card, position) => {
       (x) => x.uniqueId === card.uniqueId
     );
     if (cardIndex > -1) {
+      // Only Charge Minion will be ready to be played immediately
+      if (card.mechanics && card.mechanics.includes(Mechanics.Charge))
+        card.isReady = true;
+
       if (card.type === CardType.Minion) {
         if (player.minions.length === 0) player.minions.push(card);
         else player.minions.splice(position, 0, card);
@@ -96,6 +100,7 @@ export const attackMinionWithMinion = (
 
   opponent.minions[eI].health -= player.minions[sI].attack;
   player.minions[sI].health -= opponent.minions[eI].attack;
+  player.minions[sI].activated = true;
 
   player.minions = player.minions.filter((m) => m.health > 0);
   opponent.minions = opponent.minions.filter((m) => m.health > 0);
@@ -116,6 +121,15 @@ export const attackMinionWithMinion = (
     player.minions.splice(sI, 1);
 };
 
+export const attackHeroWithMinion = (G, ctx, minionId) => {
+  const player = G.players[ctx.currentPlayer];
+  const opponentHero = G.players[ctx.currentPlayer === "0" ? "1" : "0"].hero;
+
+  const index = player.minions.findIndex((m) => m.uniqueId === minionId);
+  opponentHero.health -= player.minions[index].attack;
+  player.minions[index].activated = true;
+};
+
 export const attackMinionWithDamage = (G, ctx, minionId, damage) => {
   const opponent = G.players[ctx.currentPlayer === "0" ? "1" : "0"];
   const index = opponent.minions.findIndex((m) => m.id === minionId);
@@ -133,7 +147,7 @@ export const attackAllMinionsWithDamage = (G, ctx, damage) => {
   opponent.minions = opponent.minions.filter((m) => m.health > 0);
 };
 
-export const attackHeroWithMinion = (G, ctx, damage) => {
+export const attackHeroWithDamage = (G, ctx, damage) => {
   const opponent = G.players[ctx.currentPlayer === "0" ? "1" : "0"];
 
   while (opponent.hero.armor > 0 && damage > 0) {

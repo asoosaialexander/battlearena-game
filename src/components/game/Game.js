@@ -14,8 +14,9 @@ import {
   attackMinionWithMinion,
   drawInitialCards,
   attackHeroWithMinion,
+  attackHeroWithDamage,
 } from "./MoveList";
-import { setMana, endTurn } from "../moves/gameMoves";
+import { setMana, readyMinions, endTurn } from "../moves/gameMoves";
 import { CoinFace } from "../common/constants";
 import { TurnOrder } from "boardgame.io/core";
 import { playCoin } from "../moves/commonSpells";
@@ -54,12 +55,24 @@ export const Hearthstone = {
 
     shuffle(mageDeck);
     for (const card of mageDeck) {
-      players["0"].deck.push({ ...card, uniqueId: uuidv4(), isMarked: false });
+      players["0"].deck.push({
+        ...card,
+        uniqueId: uuidv4(),
+        isMarked: false,
+        isReady: false,
+        activated: false,
+      });
     }
 
     shuffle(warriorDeck);
     for (const card of warriorDeck) {
-      players["1"].deck.push({ ...card, uniqueId: uuidv4(), isMarked: false });
+      players["1"].deck.push({
+        ...card,
+        uniqueId: uuidv4(),
+        isMarked: false,
+        isReady: false,
+        activated: false,
+      });
     }
 
     //Select First Player
@@ -105,9 +118,11 @@ export const Hearthstone = {
     attackHeroWithMinion,
     attackMinionWithDamage,
     attackAllMinionsWithDamage,
+    attackHeroWithDamage,
     setMana,
+    readyMinions,
     endTurn,
-    playCoin
+    playCoin,
   },
 
   endIf: (G, ctx) => {
@@ -139,6 +154,7 @@ export const Hearthstone = {
     order: TurnOrder.CUSTOM_FROM("turnOrder"),
     onBegin: (G, ctx) => {
       setMana(G, ctx);
+      readyMinions(G, ctx);
     },
   },
 };

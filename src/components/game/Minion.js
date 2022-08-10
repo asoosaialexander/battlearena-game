@@ -16,11 +16,13 @@ import HealthImg from "./../../images/health.png";
 import AttackImg from "./../../images/attack.png";
 import PoisonousImg from "./../../images/icon_poisonous.png";
 import DeathratlleImg from "./../../images/icon_deathrattle.png";
+import SleepImg from "./../../images/minionSleeping.png";
 import { Box } from "@mui/system";
 import { Mechanics, Rarity } from "./../common/constants";
 
 export default function Minion({ card, context, game, moves }) {
-  const { uniqueId, attack, health, rarity, name, mechanics, text } = card;
+  const { uniqueId, attack, health, rarity, name, mechanics, text, isReady } =
+    card;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -29,6 +31,19 @@ export default function Minion({ card, context, game, moves }) {
 
   const opponentMinions =
     game.players[context.currentPlayer === "0" ? "1" : "0"].minions;
+
+  const tauntMinions = [];
+  for (const minion of opponentMinions) {
+    if (minion.mechanics && minion.mechanics.includes(Mechanics.Taunt))
+      tauntMinions.push(minion);
+  }
+
+  let availableTargets;
+  if (tauntMinions.length > 0) {
+    availableTargets = tauntMinions;
+  } else {
+    availableTargets = opponentMinions;
+  }
 
   const handleChange = (event) => {
     setTarget(event.target.value);
@@ -51,7 +66,10 @@ export default function Minion({ card, context, game, moves }) {
       <Paper
         elevation={0}
         className="mContainer"
-        onClick={handleOpen}
+        onClick={() => {
+          if (!card.isReady) return console.log("Minion Not Ready!");
+          handleOpen();
+        }}
         onMouseEnter={() => {
           setHelpText(true);
         }}
@@ -93,6 +111,7 @@ export default function Minion({ card, context, game, moves }) {
         {mechanics && mechanics.includes(Mechanics.Deathrattle) && (
           <img className="deathrattle" src={DeathratlleImg} alt="posion" />
         )}
+        {!isReady && <img className="sleep" src={SleepImg} alt="sleep" />}
       </Paper>
       {text && helpText && (
         <Card
@@ -122,13 +141,16 @@ export default function Minion({ card, context, game, moves }) {
               label="target"
               onChange={handleChange}
             >
-              {opponentMinions.map((m) => {
+              {availableTargets.map((m) => {
                 return (
                   <MenuItem key={m.uniqueId} value={m.uniqueId}>
                     {m.name}
                   </MenuItem>
                 );
               })}
+              {tauntMinions.length === 0 && (
+                <MenuItem value={"hero"}>{"HERO"}</MenuItem>
+              )}
             </Select>
           </FormControl>
           <Grid gap={1} container direction={"row"} sx={{ marginTop: 1 }}>
@@ -136,7 +158,8 @@ export default function Minion({ card, context, game, moves }) {
               <Button
                 variant="outlined"
                 onClick={() => {
-                  moves.attackMinionWithMinion(uniqueId, target);
+                  if (target === "hero") moves.attackHeroWithMinion(uniqueId);
+                  else moves.attackMinionWithMinion(uniqueId, target);
                   handleClose();
                 }}
               >
