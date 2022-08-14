@@ -24,15 +24,12 @@ import React, { useState, useEffect } from "react";
 import { getAllPlayerDecks } from "../../services/playerDeck";
 import { useNavigate } from "react-router-dom";
 import AlertModal from "../common/AlertModal";
-import { useDispatch } from "react-redux";
-import { loadDeck } from "./playerSlice";
 
 export default function DeckSelection() {
   const [deckList, setDeckList] = React.useState([]);
   const [selectedDeck, setSelectedDeck] = useState({});
   const [open, setOpen] = useState(false);
   let navigate = useNavigate();
-  let dispatch = useDispatch();
 
   useEffect(() => {
     getAllPlayerDecks().then((res) => {
@@ -193,10 +190,9 @@ export default function DeckSelection() {
                     fontWeight: "bold",
                     fontFamily: "Belwe Bd BT",
                   }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(loadDeck({ player: "self", deck: selectedDeck }));
+                  onClick={() => {
                     navigate("/play");
+                    localStorage.setItem("deck", JSON.stringify(selectedDeck));
                   }}
                 >
                   Play

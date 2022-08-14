@@ -2,8 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./fonts/BelweBoldBT.ttf";
 import "./index.css";
-import { store } from "./app/store";
-import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import DeckBuilderLayout from "./components/deckBuilder/DeckBuilderLayout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -14,17 +12,15 @@ import GameApp from "./components/game/GameApp";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <Router>
-        <Routes>
-          <Route path="/play" element={<GameApp />} />
-          <Route path="/deckSelection" element={<DeckSelection/>} />
-          <Route path="/collection" element={<DeckBuilderLayout />} />
-          <Route path="/heroSelection" element={<HeroSelectionlayout />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </Router>
-    </Provider>
+    <Router>
+      <Routes>
+        <Route path="/play" element={<GameApp />} />
+        <Route path="/deckSelection" element={<DeckSelection />} />
+        <Route path="/collection" element={<DeckBuilderLayout />} />
+        <Route path="/heroSelection" element={<HeroSelectionlayout />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );

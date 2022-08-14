@@ -10,6 +10,7 @@ import {
   toggleCardSelection,
   markCard,
   attackAllMinionsWithDamage,
+  attackAllOpponentMinionsWithDamage,
   attackMinionWithDamage,
   attackMinionWithMinion,
   drawInitialCards,
@@ -50,11 +51,12 @@ export const Hearthstone = {
       };
     });
 
-    const mageDeck = MAGE_DECK;
+    const playerDeck = JSON.parse(localStorage.getItem("deck"));
+    console.log(playerDeck);
     const warriorDeck = WARRIOR_DECK;
 
-    shuffle(mageDeck);
-    for (const card of mageDeck) {
+    shuffle(playerDeck.cards);
+    for (const card of playerDeck.cards) {
       players["0"].deck.push({
         ...card,
         uniqueId: uuidv4(),
@@ -118,6 +120,7 @@ export const Hearthstone = {
     attackHeroWithMinion,
     attackMinionWithDamage,
     attackAllMinionsWithDamage,
+    attackAllOpponentMinionsWithDamage,
     attackHeroWithDamage,
     setMana,
     readyMinions,
@@ -153,6 +156,7 @@ export const Hearthstone = {
   turn: {
     order: TurnOrder.CUSTOM_FROM("turnOrder"),
     onBegin: (G, ctx) => {
+      drawCard(G, ctx);
       setMana(G, ctx);
       readyMinions(G, ctx);
     },

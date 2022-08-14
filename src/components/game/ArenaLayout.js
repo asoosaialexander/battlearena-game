@@ -39,7 +39,7 @@ export default function ArenaLayout({ ctx, G, moves }) {
                 fontWeight: "bold",
                 fontFamily: "Belwe Bd BT",
               }}
-              onClick={() => moves.endTurn()}
+              onClick={moves.endTurn}
             >
               End Turn
             </Button>

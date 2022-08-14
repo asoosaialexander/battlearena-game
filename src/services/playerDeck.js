@@ -10,7 +10,7 @@ const playerDeckApi = {
   },
   updatePlayerDeck: (deck) => {
     axios
-      .put(ServerRoot + "playerDecks/" + deck.id + ".json", deck)
+      .put(ServerRoot + "playerDecks/" + deck.name + ".json", deck)
       .then((res) => {
         console.log(`${res.status} ${res.statusText}`);
       });

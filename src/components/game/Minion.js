@@ -67,7 +67,7 @@ export default function Minion({ card, context, game, moves }) {
         elevation={0}
         className="mContainer"
         onClick={() => {
-          if (!card.isReady) return console.log("Minion Not Ready!");
+          if (!card.isReady || card.isActivated) return console.log("Minion Not Ready!");
           handleOpen();
         }}
         onMouseEnter={() => {

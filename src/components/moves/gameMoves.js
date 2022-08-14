@@ -9,7 +9,7 @@ export const readyMinions = (G, ctx) => {
   const minions = G.players[ctx.currentPlayer].minions;
   for (let index = 0; index < minions.length; index++) {
     minions[index].isReady = true;
-    minions[index].activated = false;
+    minions[index].isActivated = false;
   }
 };
 

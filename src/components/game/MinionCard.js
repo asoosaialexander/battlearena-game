@@ -20,6 +20,9 @@ export default function MinionCard({ player, game, card, moves }) {
           width: "240px",
           height: "336px",
           zoom: "80%",
+          "&:hover": {
+            zoom: "120%",
+          },
         }}
         onClick={() => {
           // Todo: show dialog only when minions present

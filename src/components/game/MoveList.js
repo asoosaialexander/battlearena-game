@@ -1,6 +1,34 @@
 import { CardType, Mechanics } from "../common/constants";
 import { Coin } from "../common/generatedCards";
+import { shuffle } from "../common/CommonMethods";
 import { v4 as uuidv4 } from "uuid";
+
+export const loadDeck = (G, ctx, decks) => {
+  ["0", "1"].forEach((playerId) => {
+    const player = G.players[playerId];
+    for (const card of decks[playerId]) {
+      player.deck.push({
+        ...card,
+        uniqueId: uuidv4(),
+        isMarked: false,
+        isReady: false,
+        isActivated: false,
+      });
+    }
+
+    shuffle(player.deck);
+
+    let i = G.firstPlayer === playerId ? 3 : 4;
+
+    while (i > 0) {
+      const index = Math.floor(Math.random() * player.deck.length);
+      player.selection.cards.push(player.deck[index]);
+      player.deck.splice(index, 1);
+      i--;
+    }
+  });
+  ctx.events.setPhase("draw");
+};
 
 export const drawCard = (G, ctx) => {
   const player = G.players[ctx.currentPlayer];
@@ -24,14 +52,17 @@ export const playCard = (G, ctx, card, position) => {
     const cardIndex = player.cards.findIndex(
       (x) => x.uniqueId === card.uniqueId
     );
-    if (cardIndex > -1) {
-      // Only Charge Minion will be ready to be played immediately
-      if (card.mechanics && card.mechanics.includes(Mechanics.Charge))
-        card.isReady = true;
 
-      if (card.type === CardType.Minion) {
-        if (player.minions.length === 0) player.minions.push(card);
-        else player.minions.splice(position, 0, card);
+    if (cardIndex > -1) {
+      const minion = player.cards[cardIndex];
+
+      // Only Charge Minion will be ready to be played immediately
+      if (minion.mechanics && minion.mechanics.includes(Mechanics.Charge))
+        minion.isReady = true;
+
+      if (minion.type === CardType.Minion) {
+        if (player.minions.length === 0) player.minions.push(minion);
+        else player.minions.splice(position, 0, minion);
       }
       player.cards.splice(cardIndex, 1);
       player.mana.available -= card.cost;
@@ -100,7 +131,7 @@ export const attackMinionWithMinion = (
 
   opponent.minions[eI].health -= player.minions[sI].attack;
   player.minions[sI].health -= opponent.minions[eI].attack;
-  player.minions[sI].activated = true;
+  player.minions[sI].isActivated = true;
 
   player.minions = player.minions.filter((m) => m.health > 0);
   opponent.minions = opponent.minions.filter((m) => m.health > 0);
@@ -127,7 +158,7 @@ export const attackHeroWithMinion = (G, ctx, minionId) => {
 
   const index = player.minions.findIndex((m) => m.uniqueId === minionId);
   opponentHero.health -= player.minions[index].attack;
-  player.minions[index].activated = true;
+  player.minions[index].isActivated = true;
 };
 
 export const attackMinionWithDamage = (G, ctx, minionId, damage) => {
@@ -139,6 +170,21 @@ export const attackMinionWithDamage = (G, ctx, minionId, damage) => {
 };
 
 export const attackAllMinionsWithDamage = (G, ctx, damage) => {
+  let playerMinions = G.players[ctx.currentPlayer].minions;
+  let opponentMinions =
+    G.players[ctx.currentPlayer === "0" ? "1" : "0"].minions;
+
+  for (const minion of playerMinions) {
+    minion.health -= damage;
+  }
+  for (const minion of opponentMinions) {
+    minion.health -= damage;
+  }
+  playerMinions = playerMinions.filter((m) => m.health > 0);
+  opponentMinions = opponentMinions.filter((m) => m.health > 0);
+};
+
+export const attackAllOpponentMinionsWithDamage = (G, ctx, damage) => {
   const opponent = G.players[ctx.currentPlayer === "0" ? "1" : "0"];
 
   for (var i = 0; i < opponent.minions.length; i++) {

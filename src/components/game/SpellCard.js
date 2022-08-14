@@ -14,7 +14,7 @@ export default function SpellCard({ card, player, game, moves }) {
         }
         break;
       case Spell.Flamestrike:
-        moves.attackAllMinionsWithDamage(5);
+        moves.attackAllOpponentMinionsWithDamage(5);
         break;
       case Spell.Coin:
         moves.playCoin();
@@ -36,6 +36,9 @@ export default function SpellCard({ card, player, game, moves }) {
         height: "329px",
         zoom: "80%",
         cursor: "pointer",
+        "&:hover": {
+          zoom: "120%",
+        },
       }}
       onClick={() => playSpell(name)}
     >
