@@ -57,13 +57,40 @@ export const Mechanics = {
 export const Spell = {
   ArcaneIntellect: "Arcane Intellect",
   Flamestrike: "Flamestrike",
-  Coin:"Coin"
+  Coin: "Coin",
+};
+
+export const Power = {
+  DemonClaws: "Demon Claws", //+1 attack this turn
+  Fireblast: "Fireblast", // deal 1 damage
+  TotemicCall: "Totemic Call", //summon a random Totem
+  ArmorUp: "Armor Up" //Gain 2 armor
 };
 
 export const APIRoot = "https://art.hearthstonejson.com/v1";
-export const ServerRoot = "https://battlearena-api-default-rtdb.firebaseio.com/";
+export const ServerRoot =
+  "https://battlearena-api-default-rtdb.firebaseio.com/";
 
 export const CoinFace = {
   Heads: "Heads",
   Tails: "Tails",
+};
+
+export const HeroPower = {
+  DEMONHUNTER: {
+    cost: 1,
+    power: Power.DemonClaws,
+  },
+  MAGE: {
+    cost: 2,
+    power: Power.Fireblast,
+  },
+  SHAMAN: {
+    cost: 2,
+    power: Power.TotemicCall
+  },
+  WARRIOR:{
+    cost:2,
+    power: Power.ArmorUp
+  }
 };

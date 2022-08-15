@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import GemImg from "./../../images/gem.png";
 import LockImg from "./../../images/lock.png";
 
@@ -19,6 +19,15 @@ export default function Mana({ game, player }) {
             />
           );
         })}
+      </Grid>
+      <Grid item sx={{ paddingLeft: 1 }}>
+        <Typography
+          variant="body"
+          sx={{
+            fontFamily: "Belwe Bd BT",
+            fontSize: 36,
+          }}
+        >{`(${mana.available}/${mana.total})`}</Typography>
       </Grid>
       <Grid item>
         {[...Array(mana.overload)].map((x, i) => {

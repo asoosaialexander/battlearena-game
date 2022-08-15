@@ -18,7 +18,7 @@ import {
   attackHeroWithDamage,
 } from "./MoveList";
 import { setMana, readyMinions, endTurn } from "../moves/gameMoves";
-import { CoinFace } from "../common/constants";
+import { CoinFace, HeroPower } from "../common/constants";
 import { TurnOrder } from "boardgame.io/core";
 import { playCoin } from "../moves/commonSpells";
 
@@ -28,6 +28,8 @@ export const Hearthstone = {
     ["0", "1"].forEach((playerId) => {
       players[playerId] = {
         hero: {
+          class:"",
+          power: {},
           attack: 0,
           armor: 0,
           health: 30,
@@ -52,7 +54,6 @@ export const Hearthstone = {
     });
 
     const playerDeck = JSON.parse(localStorage.getItem("deck"));
-    console.log(playerDeck);
     const warriorDeck = WARRIOR_DECK;
 
     shuffle(playerDeck.cards);
@@ -66,6 +67,9 @@ export const Hearthstone = {
       });
     }
 
+    players[0].hero.class = playerDeck.hero;
+    players[0].hero.power = HeroPower[playerDeck.hero];
+
     shuffle(warriorDeck);
     for (const card of warriorDeck) {
       players["1"].deck.push({
@@ -76,6 +80,9 @@ export const Hearthstone = {
         activated: false,
       });
     }
+
+    players[1].hero.class = "WARRIOR";
+    players[1].hero.power = HeroPower["WARROR"];
 
     //Select First Player
     const firstPlayer = tossACoin() === CoinFace.Heads ? "0" : "1";
@@ -130,10 +137,12 @@ export const Hearthstone = {
 
   endIf: (G, ctx) => {
     if (G.players["0"].hero.health <= 0) {
+      alert("You LOST!");
       return { winner: ["1"] };
     }
 
     if (G.players["1"].hero.health <= 0) {
+      alert("You WON!")
       return { winner: ["0"] };
     }
   },

@@ -6,6 +6,7 @@ import PlayerHand from "./playerHand";
 import CardDeck from "./cardDeck";
 import PlayerHero from "./playerHero";
 import CardsSelectionModal from "./CardsSelectionModal";
+import SettingsIcon from "@mui/icons-material/Settings";
 import Mana from "./Mana";
 
 export default function ArenaLayout({ ctx, G, moves }) {
@@ -17,7 +18,7 @@ export default function ArenaLayout({ ctx, G, moves }) {
       <Card sx={{ m: 1, p: 1, boxShadow: 1 }}>
         <Grid container direction={"row"} sx={{ alignItems: "center" }}>
           <Grid item xs={3}>
-            <PlayerHero player={enemy} game={G} />
+            <PlayerHero player={enemy} game={G} moves={moves} />
             <Mana player={enemy} game={G} />
           </Grid>
           <Grid item xs>
@@ -31,10 +32,14 @@ export default function ArenaLayout({ ctx, G, moves }) {
       <Card sx={{ m: 1, boxShadow: 1 }}>
         <EnemyArea player={enemy} context={ctx} game={G} moves={moves} />
         <Grid container sx={{ alignItems: "center" }}>
-          <Grid item xs={1}>
+          <Grid item>
+            <SettingsIcon sx={{ fontSize: 40, cursor: "pointer" }} />
+          </Grid>
+          <Grid item>
             <Button
               variant="outlined"
               sx={{
+                m: 1,
                 marginLeft: 2,
                 fontWeight: "bold",
                 fontFamily: "Belwe Bd BT",
@@ -53,7 +58,7 @@ export default function ArenaLayout({ ctx, G, moves }) {
       <Card sx={{ m: 1, p: 1, boxShadow: 1 }}>
         <Grid container direction={"row"} sx={{ alignItems: "center" }}>
           <Grid item xs={3}>
-            <PlayerHero player={self} game={G} />
+            <PlayerHero player={self} game={G} moves={moves} />
             <Mana player={self} game={G} />
           </Grid>
           <Grid item xs>

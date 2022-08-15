@@ -12,10 +12,6 @@
   zoom: 52%;
 }
 
-.heroFrame {
-  height: 200px;
-}
-
 .normalFrame {
   background: url("./../../images/normalMinion.png") -45px -36px;
   height: 260px;

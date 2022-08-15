@@ -1,40 +1,52 @@
 .armorImg {
   position: absolute;
   height: 55px;
-  top: 97px;
-  left: 128px;
+  top: 107px;
+  left: 173px;
 }
 
 .heroArmor {
   position: absolute;
   font-weight: bold;
   font-size: 36px;
-  top: 97px;
+  top: 107px;
   color: whitesmoke;
   -webkit-text-stroke: 1px black;
 }
 
 .heroArmor.single {
-  left: 143px;
+  left: 188px;
 }
 .heroArmor.double {
   font-size: 36px;
-  left: 132px;
+  left: 177px;
+}
+
+.heroHealthImg {
+  position: absolute;
+  height: 75px;
+  top: 150px;
+  left: 165px;
 }
 
 .heroHealth {
   position: absolute;
   font-weight: bold;
   font-size: 36px;
-  top: 145px;
+  top: 170px;
   color: whitesmoke;
   -webkit-text-stroke: 1px black;
 }
 
 .heroHealth.single {
-  left: 143px;
+  left: 186px;
 }
 .heroHealth.double {
-  font-size: 36px;
-  left: 132px;
+  font-size: 34px;
+  left: 178px;
+}
+
+.heroFrame {
+  height: 300px;
+  cursor: pointer;
 }
