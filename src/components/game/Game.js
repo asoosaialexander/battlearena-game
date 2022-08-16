@@ -23,6 +23,7 @@ import { TurnOrder } from "boardgame.io/core";
 import { playCoin } from "../moves/commonSpells";
 
 export const Hearthstone = {
+  name:"Hearthstone",
   setup: () => {
     let players = {};
     ["0", "1"].forEach((playerId) => {

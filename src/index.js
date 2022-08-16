@@ -9,18 +9,21 @@ import Home from "./components/Home";
 import HeroSelectionlayout from "./components/deckBuilder/HeroSelectionModal";
 import DeckSelection from "./components/game/DeckSelection";
 import GameApp from "./components/game/GameApp";
+import { AuthContextProvider } from "./context/auth-context";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/play" element={<GameApp />} />
-        <Route path="/deckSelection" element={<DeckSelection />} />
-        <Route path="/collection" element={<DeckBuilderLayout />} />
-        <Route path="/heroSelection" element={<HeroSelectionlayout />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </Router>
+    <AuthContextProvider>
+      <Router>
+        <Routes>
+          <Route path="/play" element={<GameApp />} />
+          <Route path="/deckSelection" element={<DeckSelection />} />
+          <Route path="/collection" element={<DeckBuilderLayout />} />
+          <Route path="/heroSelection" element={<HeroSelectionlayout />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Router>
+    </AuthContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

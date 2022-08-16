@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import GameLobby from "./game/GameLobby";
+import AuthContext from "../context/auth-context";
 
 export default function Home() {
   let navigate = useNavigate();
+  const ctx = useContext(AuthContext);
   return (
     <Container maxWidth="sm">
       <Typography
@@ -45,7 +48,21 @@ export default function Home() {
         >
           Collection
         </Button>
+        {ctx.isLoggedIn && (
+          <Button
+            variant="outlined"
+            fullWidth
+            sx={{
+              fontSize: 36,
+              fontFamily: "Belwe Bd BT",
+            }}
+            onClick={ctx.onLogout}
+          >
+            Logout
+          </Button>
+        )}
       </Stack>
+      {/* <GameLobby /> */}
     </Container>
   );
 }
